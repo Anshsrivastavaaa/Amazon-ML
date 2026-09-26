@@ -14,7 +14,10 @@
       "compact_exact_rate": 0.21442,
       "experimental_exact_rate": 0.41298,
       "left_empty": 0,
-      "right_empty": 0
+      "right_empty": 0,
+      "levenshtein_distance_mean": 11.68892,
+      "levenshtein_normalized_similarity_mean": 0.558037,
+      "token_jaccard_mean": 0.538065
     },
     "business_address": {
       "raw_exact_rate": 0.00076,
@@ -22,7 +25,68 @@
       "compact_exact_rate": 0.11634,
       "experimental_exact_rate": 0.11648,
       "left_empty": 0,
-      "right_empty": 2206
+      "right_empty": 2206,
+      "levenshtein_distance_mean": 34.54172,
+      "levenshtein_normalized_similarity_mean": 0.356852,
+      "token_jaccard_mean": 0.571486
+    }
+  },
+  "source_separated_positive_pairs": {
+    "S2": {
+      "sampled_pairs": 50000,
+      "metrics": {
+        "sampled_pairs": 50000,
+        "business_name": {
+          "raw_exact_rate": 0.04756,
+          "safe_unicode_exact_rate": 0.15552,
+          "compact_exact_rate": 0.21342,
+          "experimental_exact_rate": 0.42882,
+          "left_empty": 0,
+          "right_empty": 0,
+          "levenshtein_distance_mean": 11.3448,
+          "levenshtein_normalized_similarity_mean": 0.56787,
+          "token_jaccard_mean": 0.553973
+        },
+        "business_address": {
+          "raw_exact_rate": 0.0,
+          "safe_unicode_exact_rate": 0.10696,
+          "compact_exact_rate": 0.12554,
+          "experimental_exact_rate": 0.12556,
+          "left_empty": 0,
+          "right_empty": 2356,
+          "levenshtein_distance_mean": 35.4974,
+          "levenshtein_normalized_similarity_mean": 0.339538,
+          "token_jaccard_mean": 0.584877
+        }
+      }
+    },
+    "S3": {
+      "sampled_pairs": 50000,
+      "metrics": {
+        "sampled_pairs": 50000,
+        "business_name": {
+          "raw_exact_rate": 0.0474,
+          "safe_unicode_exact_rate": 0.15854,
+          "compact_exact_rate": 0.22152,
+          "experimental_exact_rate": 0.4117,
+          "left_empty": 0,
+          "right_empty": 0,
+          "levenshtein_distance_mean": 8.68196,
+          "levenshtein_normalized_similarity_mean": 0.675763,
+          "token_jaccard_mean": 0.566626
+        },
+        "business_address": {
+          "raw_exact_rate": 0.04398,
+          "safe_unicode_exact_rate": 0.04406,
+          "compact_exact_rate": 0.04408,
+          "experimental_exact_rate": 0.04408,
+          "left_empty": 0,
+          "right_empty": 2158,
+          "levenshtein_distance_mean": 23.39496,
+          "levenshtein_normalized_similarity_mean": 0.5795,
+          "token_jaccard_mean": 0.464156
+        }
+      }
     }
   },
   "collision_stats": {

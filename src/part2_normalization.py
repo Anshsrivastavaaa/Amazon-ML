@@ -8,14 +8,17 @@ blocking and matching so its findings can be reused by later pipeline stages.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
+import random
 import sys
 import unicodedata
 from collections import Counter
 from pathlib import Path
 
 import pandas as pd
+from rapidfuzz.distance import Levenshtein
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.config import (  # noqa: E402
@@ -91,6 +94,38 @@ def _read_ground_truth_sample(sample_size: int, seed: int) -> pd.DataFrame:
     return sampled[["source1_entity_id", "matched_id"]]
 
 
+def _read_source_separated_samples(
+    sample_size: int, seed: int
+) -> dict[str, pd.DataFrame]:
+    """Reservoir-sample S1-S2 and S1-S3 pairs independently from ground truth."""
+    reservoirs = {"S2": [], "S3": []}
+    seen = {"S2": 0, "S3": 0}
+    rng = random.Random(seed)
+    with TRAIN_GROUND_TRUTH.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        for row in reader:
+            source1_id = row["source1_entity_id"]
+            for matched_id in row["matched_entity_ids"].split(","):
+                matched_id = matched_id.strip()
+                source = matched_id[:2]
+                if source not in reservoirs:
+                    continue
+                seen[source] += 1
+                item = (source1_id, matched_id)
+                if len(reservoirs[source]) < sample_size:
+                    reservoirs[source].append(item)
+                else:
+                    replacement = rng.randrange(seen[source])
+                    if replacement < sample_size:
+                        reservoirs[source][replacement] = item
+    return {
+        source: pd.DataFrame(
+            pairs, columns=["source1_entity_id", "matched_id"]
+        )
+        for source, pairs in reservoirs.items()
+    }
+
+
 def _lookup_records(path: Path, ids: set[str], chunk_size: int) -> pd.DataFrame:
     """Look up selected IDs without retaining an entire source in memory."""
     records: list[pd.DataFrame] = []
@@ -115,9 +150,13 @@ def _pair_experiment(
     """Measure exact agreement and missing-value behavior on true pairs."""
     left = sample.merge(source1, left_on="source1_entity_id", right_on="entity_id")
     right = sample.merge(source2, left_on="matched_id", right_on="entity_id")
-    pairs = left[["source1_entity_id", "business_name", "business_address"]].merge(
-        right[["source1_entity_id", "business_name", "business_address"]],
-        on="source1_entity_id",
+    pairs = left[
+        ["source1_entity_id", "matched_id", "business_name", "business_address"]
+    ].merge(
+        right[
+            ["source1_entity_id", "matched_id", "business_name", "business_address"]
+        ],
+        on=["source1_entity_id", "matched_id"],
         suffixes=("_s1", "_matched"),
     )
 
@@ -125,6 +164,29 @@ def _pair_experiment(
     for field in ("business_name", "business_address"):
         left_values = pairs[f"{field}_s1"]
         right_values = pairs[f"{field}_matched"]
+        raw_left = left_values.tolist()
+        raw_right = right_values.tolist()
+
+        def token_jaccard(left: str, right: str) -> float:
+            left_tokens = set(safe_unicode(left).split())
+            right_tokens = set(safe_unicode(right).split())
+            if not left_tokens and not right_tokens:
+                return 1.0
+            if not left_tokens or not right_tokens:
+                return 0.0
+            return len(left_tokens & right_tokens) / len(left_tokens | right_tokens)
+
+        levenshtein_distances = [
+            Levenshtein.distance(left, right)
+            for left, right in zip(raw_left, raw_right)
+        ]
+        levenshtein_similarities = [
+            Levenshtein.normalized_similarity(left, right)
+            for left, right in zip(raw_left, raw_right)
+        ]
+        token_jaccards = [
+            token_jaccard(left, right) for left, right in zip(raw_left, raw_right)
+        ]
         result[field] = {
             "raw_exact_rate": round(
                 float((left_values == right_values).mean()), 6
@@ -158,6 +220,15 @@ def _pair_experiment(
             ),
             "left_empty": int((left_values == "").sum()),
             "right_empty": int((right_values == "").sum()),
+            "levenshtein_distance_mean": round(
+                float(sum(levenshtein_distances) / len(pairs)), 6
+            ),
+            "levenshtein_normalized_similarity_mean": round(
+                float(sum(levenshtein_similarities) / len(pairs)), 6
+            ),
+            "token_jaccard_mean": round(
+                float(sum(token_jaccards) / len(pairs)), 6
+            ),
         }
     return result
 
@@ -225,6 +296,23 @@ def run_experiment(
     s3 = _lookup_records(TRAIN_SOURCE3, s3_ids, chunk_size)
     matched = pd.concat([s2, s3], ignore_index=True)
 
+    separated_samples = _read_source_separated_samples(sample_size, seed)
+    separated_results: dict[str, object] = {}
+    for source, separated_sample in separated_samples.items():
+        source1_ids = set(separated_sample["source1_entity_id"])
+        source_ids = set(separated_sample["matched_id"])
+        source1_records = _lookup_records(
+            TRAIN_SOURCE1, source1_ids, chunk_size
+        )
+        source_path = TRAIN_SOURCE2 if source == "S2" else TRAIN_SOURCE3
+        source_records = _lookup_records(source_path, source_ids, chunk_size)
+        separated_results[source] = {
+            "sampled_pairs": len(separated_sample),
+            "metrics": _pair_experiment(
+                separated_sample, source1_records, source_records
+            )
+        }
+
     result = {
         "experiment": {
             "seed": seed,
@@ -234,6 +322,7 @@ def run_experiment(
             "source": "training data and training ground truth",
         },
         "true_pair_agreement": _pair_experiment(sample, s1, matched),
+        "source_separated_positive_pairs": separated_results,
         "collision_stats": {
             "train_source1": {
                 "business_name": _collision_stats(

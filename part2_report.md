@@ -16,7 +16,11 @@ output is
 ## Experimental design
 
 - Source: the actual training TSV files and `train_ground_truth.tsv`.
-- Positive-pair sample: 50,000 matched Source 1-to-Source 2/3 relationships.
+- Legacy mixed positive-pair sample: 50,000 matched Source 1-to-Source 2/3
+  relationships, using the first listed match from each sampled Source 1 row.
+- Source-separated positive-pair samples: 50,000 S1↔S2 pairs and 50,000
+  S1↔S3 pairs, sampled independently with reservoir sampling over all
+  ground-truth match IDs.
 - Sampling seed: 42.
 - Source files were read in 100,000-row chunks.
 - Collision statistics were calculated over all rows in each training source.
@@ -60,7 +64,46 @@ tokens such as `private`, `pvt`, `limited`, `ltd`, `corporation`, `corp`, `inc`,
 It is not approved as the sole representation for blocking or matching because
 it can merge otherwise distinct businesses.
 
-## Positive-pair results
+## Source-separated positive-pair results
+
+The source-separated experiment is the primary confirmation for Part 2. It
+contains exactly 50,000 joined pairs for each source relationship:
+
+- S1↔S2: 50,000 pairs.
+- S1↔S3: 50,000 pairs.
+
+Levenshtein distance is the ordinary character edit distance. The normalized
+similarity is the RapidFuzz normalized Levenshtein similarity in `[0, 1]`.
+Token Jaccard uses whitespace-separated tokens from the Safe Unicode view.
+
+### S1↔S2: 50,000 pairs
+
+| Field | Raw exact | Safe Unicode exact | Compact exact | Experimental exact | Mean Lev. distance | Mean Lev. similarity | Mean token Jaccard |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Business name | 4.756% | 15.552% | 21.342% | 42.882% | 11.3448 | 0.567870 | 0.553973 |
+| Business address | 0.000% | 10.696% | 12.554% | 12.556% | 35.4974 | 0.339538 | 0.584877 |
+
+The matched Source 2 address was empty in 2,356 pairs. Source 1 names and
+matched names were non-empty in all sampled pairs.
+
+### S1↔S3: 50,000 pairs
+
+| Field | Raw exact | Safe Unicode exact | Compact exact | Experimental exact | Mean Lev. distance | Mean Lev. similarity | Mean token Jaccard |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Business name | 4.740% | 15.854% | 22.152% | 41.170% | 8.6820 | 0.675763 | 0.566626 |
+| Business address | 4.398% | 4.406% | 4.408% | 4.408% | 23.3950 | 0.579500 | 0.464156 |
+
+The matched Source 3 address was empty in 2,158 pairs. Source 1 names and
+matched names were non-empty in all sampled pairs.
+
+Safe Unicode and Compact improve exact agreement over raw values for both
+source pairs. Source 3 has higher mean name similarity and lower mean name
+edit distance than Source 2 in this sample. The address behavior differs by
+source, reinforcing that address signals should be combined with names and
+other derived components rather than treated as a universal exact key.
+
+The full artifact also retains the original mixed sample for continuity:
+50,000 rows with 46,042 S1↔S2 and 3,958 S1↔S3 first-match pairs.
 
 | Field | Raw exact | Safe Unicode exact | Compact exact | Experimental exact |
 |---|---:|---:|---:|---:|
@@ -72,7 +115,7 @@ raw text. Compact punctuation handling provides a further improvement. Legal
 suffix stripping increases exact name agreement substantially, but the
 collision analysis below shows why that transformation must remain auxiliary.
 
-Among the 50,000 sampled positive pairs:
+In the legacy mixed sample of 50,000 positive pairs:
 
 - No Source 1 names were empty.
 - No matched names were empty.
@@ -80,7 +123,12 @@ Among the 50,000 sampled positive pairs:
 
 Therefore, empty addresses must never be used as an exact blocking key.
 
-## Full-corpus collision results
+## Collision behavior
+
+Collision statistics are computed over every row in each full training source,
+not only the sampled pairs. The artifact stores separate results for
+`train_source1`, `train_source2`, and `train_source3`, allowing the S1↔S2 and
+S1↔S3 experiments to be interpreted against their actual candidate pools.
 
 The table reports rows belonging to duplicated non-empty values. Larger values
 mean more records share a representation and therefore a greater risk of

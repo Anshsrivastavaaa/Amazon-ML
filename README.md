@@ -27,7 +27,10 @@ Amazon-ML-Challenge/
 │   └── candidate_pairs.tsv
 ├── src/                        # Source code modules
 │   ├── config.py               # Paths, constants, column names
+│   ├── part1_eda.py            # Part 1 data ingestion and EDA
+│   ├── part2_normalization.py  # Part 2 normalization experiments
 │   └── utils.py                # Shared helpers (load_tsv, F0.5, logging)
+├── part2_report.md             # Part 2 findings and representation policy
 ├── submissions/                # Packaged submission ZIPs
 ├── .gitignore
 ├── requirements.txt
@@ -61,3 +64,19 @@ Source Data → Normalize → Block/Candidate Generation → Feature Engineering
 
 The competition uses **F₀.₅**, which weights precision more heavily than recall.
 False merges are especially costly.
+
+## Part 2 normalization
+
+Part 2 keeps raw text and evaluates conservative derived representations on
+real training relationships. Safe Unicode normalization (NFKC, case folding,
+and whitespace normalization) is the primary representation. A compact
+punctuation-insensitive view is auxiliary, while aggressive legal-suffix
+stripping remains diagnostic only because it increases collisions. Re-run the
+experiment with:
+
+```bash
+python src/part2_normalization.py --sample-size 50000 --chunk-size 100000
+```
+
+See [part2_report.md](part2_report.md) for the measured results and decisions
+that constrain Part 3 blocking.

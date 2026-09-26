@@ -1,0 +1,222 @@
+{
+  "experiment": {
+    "seed": 42,
+    "requested_pairs": 50000,
+    "sampled_pairs": 50000,
+    "chunk_size": 100000,
+    "source": "training data and training ground truth"
+  },
+  "true_pair_agreement": {
+    "sampled_pairs": 50000,
+    "business_name": {
+      "raw_exact_rate": 0.04704,
+      "safe_unicode_exact_rate": 0.15814,
+      "compact_exact_rate": 0.21442,
+      "experimental_exact_rate": 0.41298,
+      "left_empty": 0,
+      "right_empty": 0
+    },
+    "business_address": {
+      "raw_exact_rate": 0.00076,
+      "safe_unicode_exact_rate": 0.10016,
+      "compact_exact_rate": 0.11634,
+      "experimental_exact_rate": 0.11648,
+      "left_empty": 0,
+      "right_empty": 2206
+    }
+  },
+  "collision_stats": {
+    "train_source1": {
+      "business_name": {
+        "raw": {
+          "unique_nonempty_values": 1539229,
+          "duplicate_values": 177793,
+          "rows_in_duplicate_values": 845385,
+          "max_nonempty_bucket": 253,
+          "empty_rows": 0
+        },
+        "safe_unicode": {
+          "unique_nonempty_values": 1538804,
+          "duplicate_values": 178080,
+          "rows_in_duplicate_values": 846097,
+          "max_nonempty_bucket": 253,
+          "empty_rows": 0
+        },
+        "compact": {
+          "unique_nonempty_values": 1520684,
+          "duplicate_values": 180757,
+          "rows_in_duplicate_values": 866894,
+          "max_nonempty_bucket": 253,
+          "empty_rows": 0
+        },
+        "experimental": {
+          "unique_nonempty_values": 1358053,
+          "duplicate_values": 198585,
+          "rows_in_duplicate_values": 1047347,
+          "max_nonempty_bucket": 526,
+          "empty_rows": 6
+        }
+      },
+      "business_address": {
+        "raw": {
+          "unique_nonempty_values": 2130606,
+          "duplicate_values": 40089,
+          "rows_in_duplicate_values": 116304,
+          "max_nonempty_bucket": 14,
+          "empty_rows": 0
+        },
+        "safe_unicode": {
+          "unique_nonempty_values": 2130606,
+          "duplicate_values": 40089,
+          "rows_in_duplicate_values": 116304,
+          "max_nonempty_bucket": 14,
+          "empty_rows": 0
+        },
+        "compact": {
+          "unique_nonempty_values": 2130172,
+          "duplicate_values": 40511,
+          "rows_in_duplicate_values": 117160,
+          "max_nonempty_bucket": 14,
+          "empty_rows": 0
+        },
+        "experimental": {
+          "unique_nonempty_values": 2130172,
+          "duplicate_values": 40511,
+          "rows_in_duplicate_values": 117160,
+          "max_nonempty_bucket": 14,
+          "empty_rows": 0
+        }
+      }
+    },
+    "train_source2": {
+      "business_name": {
+        "raw": {
+          "unique_nonempty_values": 4402009,
+          "duplicate_values": 239779,
+          "rows_in_duplicate_values": 872386,
+          "max_nonempty_bucket": 320,
+          "empty_rows": 0
+        },
+        "safe_unicode": {
+          "unique_nonempty_values": 4192965,
+          "duplicate_values": 327729,
+          "rows_in_duplicate_values": 1169380,
+          "max_nonempty_bucket": 464,
+          "empty_rows": 0
+        },
+        "compact": {
+          "unique_nonempty_values": 4025056,
+          "duplicate_values": 394152,
+          "rows_in_duplicate_values": 1403712,
+          "max_nonempty_bucket": 526,
+          "empty_rows": 0
+        },
+        "experimental": {
+          "unique_nonempty_values": 3437687,
+          "duplicate_values": 565040,
+          "rows_in_duplicate_values": 2161948,
+          "max_nonempty_bucket": 708,
+          "empty_rows": 21
+        }
+      },
+      "business_address": {
+        "raw": {
+          "unique_nonempty_values": 4337261,
+          "duplicate_values": 421472,
+          "rows_in_duplicate_values": 949860,
+          "max_nonempty_bucket": 18,
+          "empty_rows": 168967
+        },
+        "safe_unicode": {
+          "unique_nonempty_values": 4300098,
+          "duplicate_values": 447793,
+          "rows_in_duplicate_values": 1013344,
+          "max_nonempty_bucket": 19,
+          "empty_rows": 168967
+        },
+        "compact": {
+          "unique_nonempty_values": 4286077,
+          "duplicate_values": 457292,
+          "rows_in_duplicate_values": 1036864,
+          "max_nonempty_bucket": 19,
+          "empty_rows": 168967
+        },
+        "experimental": {
+          "unique_nonempty_values": 4286077,
+          "duplicate_values": 457292,
+          "rows_in_duplicate_values": 1036864,
+          "max_nonempty_bucket": 19,
+          "empty_rows": 168967
+        }
+      }
+    },
+    "train_source3": {
+      "business_name": {
+        "raw": {
+          "unique_nonempty_values": 4651609,
+          "duplicate_values": 258276,
+          "rows_in_duplicate_values": 892270,
+          "max_nonempty_bucket": 421,
+          "empty_rows": 0
+        },
+        "safe_unicode": {
+          "unique_nonempty_values": 4473473,
+          "duplicate_values": 326688,
+          "rows_in_duplicate_values": 1138818,
+          "max_nonempty_bucket": 462,
+          "empty_rows": 0
+        },
+        "compact": {
+          "unique_nonempty_values": 4280399,
+          "duplicate_values": 400021,
+          "rows_in_duplicate_values": 1405225,
+          "max_nonempty_bucket": 521,
+          "empty_rows": 0
+        },
+        "experimental": {
+          "unique_nonempty_values": 3678434,
+          "duplicate_values": 562548,
+          "rows_in_duplicate_values": 2169694,
+          "max_nonempty_bucket": 648,
+          "empty_rows": 23
+        }
+      },
+      "business_address": {
+        "raw": {
+          "unique_nonempty_values": 4632764,
+          "duplicate_values": 382890,
+          "rows_in_duplicate_values": 859813,
+          "max_nonempty_bucket": 29,
+          "empty_rows": 175916
+        },
+        "safe_unicode": {
+          "unique_nonempty_values": 4631187,
+          "duplicate_values": 384005,
+          "rows_in_duplicate_values": 862505,
+          "max_nonempty_bucket": 29,
+          "empty_rows": 175916
+        },
+        "compact": {
+          "unique_nonempty_values": 4616044,
+          "duplicate_values": 392702,
+          "rows_in_duplicate_values": 886345,
+          "max_nonempty_bucket": 35,
+          "empty_rows": 175916
+        },
+        "experimental": {
+          "unique_nonempty_values": 4616044,
+          "duplicate_values": 392702,
+          "rows_in_duplicate_values": 886345,
+          "max_nonempty_bucket": 35,
+          "empty_rows": 175916
+        }
+      }
+    }
+  },
+  "representation_policy": {
+    "raw": "Retain unchanged for auditability and final feature comparison.",
+    "safe_unicode": "Primary representation: NFKC, case-folded, whitespace-normalized; preserves Unicode letters and digits.",
+    "compact": "Auxiliary punctuation-insensitive representation; not used alone when it creates oversized blocks.",
+    "experimental": "Diagnostic only: removes common legal suffix tokens. Never use as the sole blocking or matching representation."
+  }
+}

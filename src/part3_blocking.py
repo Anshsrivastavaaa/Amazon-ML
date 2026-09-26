@@ -64,13 +64,13 @@ def prepare_name_columns(frame: pd.DataFrame) -> pd.DataFrame:
     return prepared
 
 
-def _key(row: pd.Series, strategy: str) -> str | tuple[str, str]:
+def _key(row: object, strategy: str) -> str | tuple[str, str]:
     if strategy == "name_only":
-        return row["name_clean_unicode"]
+        return row.name_clean_unicode
     if strategy == "compact_name":
-        return row["name_nopunct"]
+        return row.name_nopunct
     if strategy == "country_name":
-        return (row["country_clean"], row["name_clean_unicode"])
+        return (row.country_clean, row.name_clean_unicode)
     raise ValueError(f"Unknown blocking strategy: {strategy}")
 
 
@@ -89,8 +89,7 @@ def build_exact_index(
     ):
         prepared = prepare_name_columns(chunk)
         for row in prepared.itertuples(index=False):
-            row_series = pd.Series(row._asdict())
-            key = _key(row_series, strategy)
+            key = _key(row, strategy)
             if (isinstance(key, str) and not key) or (
                 isinstance(key, tuple) and not all(key)
             ):
@@ -121,8 +120,7 @@ def generate_exact_candidates(
     ):
         prepared = prepare_name_columns(chunk)
         for row in prepared.itertuples(index=False):
-            row_series = pd.Series(row._asdict())
-            key = _key(row_series, strategy)
+            key = _key(row, strategy)
             if (isinstance(key, str) and not key) or (
                 isinstance(key, tuple) and not all(key)
             ):
@@ -138,3 +136,17 @@ def generate_exact_candidates(
         candidates=candidates,
         elapsed_seconds=perf_counter() - started,
     )
+
+
+def union_candidate_sets(*runs: BlockingRun) -> CandidateSet:
+    """Union candidates from multiple passes for the same S1/target pair."""
+    if not runs:
+        return CandidateSet()
+    target_sources = {run.target_source for run in runs}
+    if len(target_sources) != 1:
+        raise ValueError("Cannot union candidate runs from different target sources")
+    merged = CandidateSet()
+    for run in runs:
+        for source1_id, candidate_ids in run.candidates.source1_to_candidates.items():
+            merged.add(source1_id, candidate_ids)
+    return merged

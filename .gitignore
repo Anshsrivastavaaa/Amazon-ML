@@ -1,4 +1,4 @@
-﻿# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -13,22 +13,19 @@ env/
 */.ipynb_checkpoints/*
 
 # Large dataset files
-data/raw/*
-!data/raw/.gitkeep
+data/raw/**/*.tsv
 data/processed/*
 !data/processed/.gitkeep
 
 # Model weights and artifacts
 models/*
 !models/.gitkeep
-*.pt
-*.pth
-*.bin
-*.onnx
-*.safetensors
 *.pkl
 *.joblib
-*.h5
+
+# Output (submission files)
+output/*
+!output/.gitkeep
 
 # Submissions
 submissions/*
@@ -37,12 +34,10 @@ submissions/*
 # Logs & Tracking
 logs/
 *.log
-wandb/
-runs/
-mlruns/
 
 # IDE & OS
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+.agents/

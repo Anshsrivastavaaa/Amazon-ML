@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from collections import Counter
 from pathlib import Path
-from time import perf_counter
+from time import perf_counter, process_time
 
 import pandas as pd
 
@@ -31,7 +32,56 @@ from src.part3_blocking import (
 ADDRESS_TOKEN_THRESHOLDS = (5, 10, 25, 50, 100, 250)
 
 
-def _rows(path: Path, config: BlockingConfig):
+class M52Profiler:
+    """Phase timers and scan/recomputation counters for M5.2."""
+
+    def __init__(self) -> None:
+        self.started_wall = perf_counter()
+        self.started_cpu = process_time()
+        self.timings: Counter[str] = Counter()
+        self.counts: Counter[str] = Counter()
+        self.peak_rss_mb = 0.0
+
+    def phase(self, name: str):
+        return _ProfilePhase(self, name)
+
+    def sample_rss(self) -> None:
+        try:
+            import psutil
+
+            rss = psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)
+            self.peak_rss_mb = max(self.peak_rss_mb, rss)
+        except ImportError:
+            pass
+
+    def as_dict(self) -> dict[str, object]:
+        self.sample_rss()
+        return {
+            "wall_clock_seconds": perf_counter() - self.started_wall,
+            "cpu_seconds": process_time() - self.started_cpu,
+            "peak_rss_mb": self.peak_rss_mb,
+            "phase_seconds": dict(self.timings),
+            "operation_counts": dict(self.counts),
+        }
+
+
+class _ProfilePhase:
+    def __init__(self, profiler: M52Profiler, name: str) -> None:
+        self.profiler = profiler
+        self.name = name
+
+    def __enter__(self):
+        self.started = perf_counter()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.profiler.timings[self.name] += perf_counter() - self.started
+        self.profiler.sample_rss()
+
+
+def _rows(path: Path, config: BlockingConfig, profiler: M52Profiler | None = None):
+    if profiler is not None:
+        profiler.counts[f"full_scans:{path.name}"] += 1
     for chunk in pd.read_csv(
         path,
         sep="\t",
@@ -44,11 +94,22 @@ def _rows(path: Path, config: BlockingConfig):
 
 
 def build_address_token_frequencies(
-    target_path: Path, config: BlockingConfig
+    target_path: Path,
+    config: BlockingConfig,
+    profiler: M52Profiler | None = None,
 ) -> Counter[str]:
     frequencies: Counter[str] = Counter()
-    for row in _rows(target_path, config):
-        frequencies.update(informative_address_tokens(row.business_address))
+    phase = profiler.phase("address_normalization_and_tokenization") if profiler else None
+    if phase:
+        phase.__enter__()
+    try:
+        for row in _rows(target_path, config, profiler):
+            if profiler:
+                profiler.counts["address_token_recomputations"] += 1
+            frequencies.update(informative_address_tokens(row.business_address))
+    finally:
+        if phase:
+            phase.__exit__(None, None, None)
     return frequencies
 
 
@@ -57,15 +118,27 @@ def build_country_address_index(
     frequencies: Counter[str],
     max_frequency: int,
     config: BlockingConfig,
+    profiler: M52Profiler | None = None,
 ) -> dict[tuple[str, str], list[str]]:
     index: dict[tuple[str, str], list[str]] = {}
-    for row in _rows(target_path, config):
+    if profiler:
+        profiler.counts["target_index_rebuilds"] += 1
+    phase = profiler.phase("index_construction") if profiler else None
+    if phase:
+        phase.__enter__()
+    try:
+      for row in _rows(target_path, config, profiler):
         country = safe_unicode(row.country)
         if not country:
             continue
+        if profiler:
+            profiler.counts["address_token_recomputations"] += 1
         for token in informative_address_tokens(row.business_address):
             if frequencies[token] <= max_frequency:
                 index.setdefault((country, token), []).append(row.entity_id)
+    finally:
+        if phase:
+            phase.__exit__(None, None, None)
     return index
 
 
@@ -105,6 +178,7 @@ def generate_address_candidates(
     config: BlockingConfig,
     source1_ids: set[str],
     index: dict[tuple[str, str], list[str]] | None = None,
+    profiler: M52Profiler | None = None,
 ) -> tuple[BlockingRun, dict[str, int]]:
     started = perf_counter()
     if index is None:
@@ -114,10 +188,18 @@ def generate_address_candidates(
     candidates: dict[str, set[str]] = {}
     source1_missing_address = 0
     source1_with_informative_token = 0
-    for row in _rows(TRAIN_SOURCE1, config):
+    if profiler:
+        profiler.counts["source1_query_passes"] += 1
+    phase = profiler.phase("candidate_retrieval_and_deduplication") if profiler else None
+    if phase:
+        phase.__enter__()
+    try:
+      for row in _rows(TRAIN_SOURCE1, config, profiler):
         if row.entity_id not in source1_ids:
             continue
         country = safe_unicode(row.country)
+        if profiler:
+            profiler.counts["address_token_recomputations"] += 1
         tokens = [
             token
             for token in informative_address_tokens(row.business_address)
@@ -132,6 +214,9 @@ def generate_address_candidates(
             for token in tokens:
                 values.update(index.get((country, token), []))
         candidates[row.entity_id] = values
+    finally:
+        if phase:
+            phase.__exit__(None, None, None)
     return (
         BlockingRun(
             strategy=f"country_address_token_freq{max_frequency}",
@@ -154,6 +239,7 @@ def _m4_missed_recovery(
     validation_ids: set[str],
     truth: dict[str, set[str]],
     config: BlockingConfig,
+    profiler: M52Profiler | None = None,
 ) -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:
     from src.part3_token_blocking import (
         build_token_frequencies,
@@ -161,6 +247,8 @@ def _m4_missed_recovery(
         generate_runs_from_structures,
     )
 
+    if profiler:
+        profiler.counts["m4_missed_recovery_runs"] += 1
     frequencies = build_token_frequencies(target_path, "name_clean_unicode", config)
     structures = build_token_structures(
         target_path, "name_clean_unicode", 250, config, frequencies
@@ -189,6 +277,7 @@ def run_address_token_evaluation(
     config: BlockingConfig | None = None,
     validation_fraction: float = 0.2,
     seed: int = 42,
+    profiler: M52Profiler | None = None,
 ) -> dict[str, object]:
     config = config or BlockingConfig()
     validation_ids = build_validation_ids(validation_fraction, seed)
@@ -226,14 +315,14 @@ def run_address_token_evaluation(
     metrics: list[dict[str, object]] = []
     distributions: dict[str, object] = {}
     for source, target_path in target_paths.items():
-        frequencies = build_address_token_frequencies(target_path, config)
+        frequencies = build_address_token_frequencies(target_path, config, profiler)
         distributions[source] = {}
         m4_missed, _ = _m4_missed_recovery(
-            source, target_path, validation_ids, truth, config
+            source, target_path, validation_ids, truth, config, profiler
         )
         for threshold in ADDRESS_TOKEN_THRESHOLDS:
             index = build_country_address_index(
-                target_path, frequencies, threshold, config
+                target_path, frequencies, threshold, config, profiler
             )
             run, availability = generate_address_candidates(
                 target_path,
@@ -243,6 +332,7 @@ def run_address_token_evaluation(
                 config,
                 validation_ids,
                 index,
+                profiler,
             )
             measured = evaluate_run(
                 run,
@@ -298,6 +388,7 @@ def run_address_token_evaluation(
         "validation": {"entities": len(validation_ids)},
         "metrics": metrics,
         "block_distributions": distributions,
+        "profiling": profiler.as_dict() if profiler else None,
     }
 
 
@@ -312,10 +403,12 @@ def main() -> None:
         default=PROCESSED_DATA_DIR / "part3_address_token_results.json",
     )
     args = parser.parse_args()
+    profiler = M52Profiler()
     results = run_address_token_evaluation(
         BlockingConfig(chunk_size=args.chunk_size),
         args.validation_fraction,
         args.seed,
+        profiler,
     )
     args.output.write_text(
         json.dumps(results, indent=2) + "\n", encoding="utf-8"

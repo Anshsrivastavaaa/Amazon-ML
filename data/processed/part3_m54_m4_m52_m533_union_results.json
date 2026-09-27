@@ -1,0 +1,339 @@
+{
+  "checkpoint": "M5.4.3",
+  "validation": {
+    "fraction": 0.2,
+    "seed": 42,
+    "entities": 441365,
+    "split_unit": "source1_entity",
+    "target_indexes_use_labels": false
+  },
+  "config": {
+    "chunk_size": 100000,
+    "max_block_size": null
+  },
+  "threshold": 250,
+  "semantics": {
+    "union": "explicit per-S1 candidate ID set union",
+    "ground_truth_used_for_candidate_construction": false,
+    "m4_strategy": "country-aware rare-token name_clean_unicode",
+    "m52_strategy": "country-aware informative address token",
+    "m533_strategy": "country-aware address number"
+  },
+  "sources": {
+    "S2": {
+      "target_source": "S2",
+      "strategies": [
+        {
+          "strategy": "m4_country_rare_token_name_clean_unicode_freq250",
+          "metric": {
+            "strategy": "country_rare_token_name_clean_unicode_freq250",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 288198,
+            "pair_recall": 0.3898265652010421,
+            "complete_entity_recall": 0.4275554246485335,
+            "candidate_pairs": 14999941,
+            "average_candidates": 33.98534319667395,
+            "median_candidates": 0.0,
+            "p95_candidates": 168.0,
+            "p99_candidates": 249.0,
+            "maximum_candidates": 684,
+            "zero_candidate_entities": 240031,
+            "reduction_ratio": 0.999993249665278,
+            "runtime_seconds": 63.46132060000673,
+            "process_rss_mb": 5679.3359375
+          },
+          "cpu_seconds": 62.578125
+        },
+        {
+          "strategy": "m5.2_country_address_token_freq250",
+          "metric": {
+            "strategy": "country_address_token_freq250",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 354232,
+            "pair_recall": 0.4791464335085446,
+            "complete_entity_recall": 0.5149343513871739,
+            "candidate_pairs": 24394715,
+            "average_candidates": 55.27106816353812,
+            "median_candidates": 3.0,
+            "p95_candidates": 236.0,
+            "p99_candidates": 362.0,
+            "maximum_candidates": 934,
+            "zero_candidate_entities": 203818,
+            "reduction_ratio": 0.9999890217907059,
+            "runtime_seconds": 96.06745750003029,
+            "process_rss_mb": 6314.8125
+          },
+          "cpu_seconds": 94.125,
+          "availability": {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 240528
+          },
+          "block_statistics": {
+            "indexed_blocks": 544966,
+            "max_block_size": 250,
+            "blocks_over_100": 7122,
+            "blocks_over_1000": 0,
+            "blocks_over_10000": 0
+          }
+        },
+        {
+          "strategy": "m4_union_m52",
+          "metric": {
+            "strategy": "m4_union_m52",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 501177,
+            "pair_recall": 0.677909313970821,
+            "complete_entity_recall": 0.679582658344001,
+            "candidate_pairs": 39196644,
+            "average_candidates": 88.80777587710851,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 111444,
+            "reduction_ratio": 0.999982360566153,
+            "runtime_seconds": 159.52877810003702,
+            "process_rss_mb": 7093.015625
+          },
+          "cpu_seconds": 156.703125
+        },
+        {
+          "strategy": "m4_union_m52_union_m5.3.3",
+          "metric": {
+            "strategy": "m4_union_m52_union_m5.3.3",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 542252,
+            "pair_recall": 0.7334687771372301,
+            "complete_entity_recall": 0.7274319440825621,
+            "candidate_pairs": 48053985,
+            "average_candidates": 108.87583972449107,
+            "median_candidates": 78.0,
+            "p95_candidates": 328.0,
+            "p99_candidates": 458.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 82780,
+            "reduction_ratio": 0.9999783745493749,
+            "runtime_seconds": 317.3222713000141,
+            "process_rss_mb": 7130.05859375
+          },
+          "cpu_seconds": 309.90625
+        }
+      ],
+      "marginal_m4_to_union": {
+        "previous_strategy": "country_rare_token_name_clean_unicode_freq250",
+        "added_strategy": "country_address_token_freq250",
+        "new_recovered_pairs": 212979,
+        "new_complete_entities": 111236,
+        "candidate_pairs_before": 14999941,
+        "candidate_pairs_after": 39196644,
+        "marginal_candidate_pairs": 24196703,
+        "marginal_pair_recall": 0.2880827487697789,
+        "marginal_candidate_cost": 113.61074566037027,
+        "previously_missed_pairs": 451100,
+        "percentage_of_previous_misses_recovered": 0.47213256484149857
+      },
+      "marginal_union_to_m533": {
+        "previous_strategy": "m4_union_m52",
+        "added_strategy": "country_number_freq250",
+        "new_recovered_pairs": 41075,
+        "new_complete_entities": 21119,
+        "candidate_pairs_before": 39196644,
+        "candidate_pairs_after": 48053985,
+        "marginal_candidate_pairs": 8857341,
+        "marginal_pair_recall": 0.055559463166409216,
+        "marginal_candidate_cost": 215.63824710894704,
+        "previously_missed_pairs": 238121,
+        "percentage_of_previous_misses_recovered": 0.172496335896456
+      },
+      "m533": {
+        "strategy": "country_number_freq250",
+        "availability": {
+          "validation_entities_without_address": 0,
+          "validation_entities_with_number": 105825
+        },
+        "block_statistics": {
+          "indexed_blocks_at_threshold": 107905,
+          "max_block_size": 247,
+          "blocks_over_100": 2971,
+          "blocks_over_1000": 0,
+          "blocks_over_10000": 0
+        },
+        "runtime_seconds": 157.7934931999771,
+        "cpu_seconds": 153.203125,
+        "extraction": {
+          "rows": 5034616,
+          "rows_with_signal": 4497031,
+          "rows_with_multiple_signals": 1393781,
+          "distinct_signals": 96980,
+          "signal_occurrences": 6640377
+        }
+      }
+    },
+    "S3": {
+      "target_source": "S3",
+      "strategies": [
+        {
+          "strategy": "m4_country_rare_token_name_clean_unicode_freq250",
+          "metric": {
+            "strategy": "country_rare_token_name_clean_unicode_freq250",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 302081,
+            "pair_recall": 0.38264595865745016,
+            "complete_entity_recall": 0.4105785461012994,
+            "candidate_pairs": 15029807,
+            "average_candidates": 34.05301054682632,
+            "median_candidates": 0.0,
+            "p95_candidates": 168.0,
+            "p99_candidates": 249.0,
+            "maximum_candidates": 724,
+            "zero_candidate_entities": 242191,
+            "reduction_ratio": 0.9999935574029024,
+            "runtime_seconds": 65.00404530006927,
+            "process_rss_mb": 7076.71875
+          },
+          "cpu_seconds": 63.9375
+        },
+        {
+          "strategy": "m5.2_country_address_token_freq250",
+          "metric": {
+            "strategy": "country_address_token_freq250",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 352510,
+            "pair_recall": 0.4465243656050455,
+            "complete_entity_recall": 0.4703680627145333,
+            "candidate_pairs": 24260236,
+            "average_candidates": 54.966379300578886,
+            "median_candidates": 3.0,
+            "p95_candidates": 236.0,
+            "p99_candidates": 362.0,
+            "maximum_candidates": 923,
+            "zero_candidate_entities": 203335,
+            "reduction_ratio": 0.9999896007363208,
+            "runtime_seconds": 99.76282939990051,
+            "process_rss_mb": 7132.50390625
+          },
+          "cpu_seconds": 97.984375,
+          "availability": {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 240191
+          },
+          "block_statistics": {
+            "indexed_blocks": 517580,
+            "max_block_size": 250,
+            "blocks_over_100": 6732,
+            "blocks_over_1000": 0,
+            "blocks_over_10000": 0
+          }
+        },
+        {
+          "strategy": "m4_union_m52",
+          "metric": {
+            "strategy": "m4_union_m52",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 520514,
+            "pair_recall": 0.6593350079105406,
+            "complete_entity_recall": 0.6516148765760765,
+            "candidate_pairs": 39106086,
+            "average_candidates": 88.60259875613154,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 111968,
+            "reduction_ratio": 0.999983236993252,
+            "runtime_seconds": 164.76687469996978,
+            "process_rss_mb": 6020.83984375
+          },
+          "cpu_seconds": 161.921875
+        },
+        {
+          "strategy": "m4_union_m52_union_m5.3.3",
+          "metric": {
+            "strategy": "m4_union_m52_union_m5.3.3",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 564570,
+            "pair_recall": 0.7151407366873012,
+            "complete_entity_recall": 0.7004338812547438,
+            "candidate_pairs": 47725936,
+            "average_candidates": 108.13257961097958,
+            "median_candidates": 77.0,
+            "p95_candidates": 327.0,
+            "p99_candidates": 457.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 83737,
+            "reduction_ratio": 0.9999795420542158,
+            "runtime_seconds": 326.81911809998564,
+            "process_rss_mb": 6107.296875
+          },
+          "cpu_seconds": 319.375
+        }
+      ],
+      "marginal_m4_to_union": {
+        "previous_strategy": "country_rare_token_name_clean_unicode_freq250",
+        "added_strategy": "country_address_token_freq250",
+        "new_recovered_pairs": 218433,
+        "new_complete_entities": 106385,
+        "candidate_pairs_before": 15029807,
+        "candidate_pairs_after": 39106086,
+        "marginal_candidate_pairs": 24076279,
+        "marginal_pair_recall": 0.27668904925309046,
+        "marginal_candidate_cost": 110.22271817902973,
+        "previously_missed_pairs": 487372,
+        "percentage_of_previous_misses_recovered": 0.4481853696970692
+      },
+      "marginal_union_to_m533": {
+        "previous_strategy": "m4_union_m52",
+        "added_strategy": "country_number_freq250",
+        "new_recovered_pairs": 44056,
+        "new_complete_entities": 21547,
+        "candidate_pairs_before": 39106086,
+        "candidate_pairs_after": 47725936,
+        "marginal_candidate_pairs": 8619850,
+        "marginal_pair_recall": 0.05580572877676062,
+        "marginal_candidate_cost": 195.6566642455057,
+        "previously_missed_pairs": 268939,
+        "percentage_of_previous_misses_recovered": 0.16381409910797615
+      },
+      "m533": {
+        "strategy": "country_number_freq250",
+        "availability": {
+          "validation_entities_without_address": 0,
+          "validation_entities_with_number": 102073
+        },
+        "block_statistics": {
+          "indexed_blocks_at_threshold": 108601,
+          "max_block_size": 246,
+          "blocks_over_100": 3040,
+          "blocks_over_1000": 0,
+          "blocks_over_10000": 0
+        },
+        "runtime_seconds": 162.05224340001587,
+        "cpu_seconds": 157.453125,
+        "extraction": {
+          "rows": 5285603,
+          "rows_with_signal": 4724818,
+          "rows_with_multiple_signals": 1607354,
+          "distinct_signals": 97664,
+          "signal_occurrences": 7014731
+        }
+      }
+    }
+  },
+  "peak_rss_mb": 7228.85546875
+}

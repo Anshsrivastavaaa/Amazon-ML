@@ -13,6 +13,7 @@ env/
 */.ipynb_checkpoints/*
 
 # Large dataset files
+dataset/
 data/raw/**/*.tsv
 data/processed/*
 !data/processed/.gitkeep

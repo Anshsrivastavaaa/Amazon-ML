@@ -1,0 +1,107 @@
+{
+  "checkpoint": "M5.3.4.2",
+  "strategy": "country_postal",
+  "validation": {
+    "fraction": 0.2,
+    "seed": 42,
+    "entities": 441365,
+    "split_unit": "source1_entity",
+    "target_indexes_use_labels": false
+  },
+  "config": {
+    "chunk_size": 100000,
+    "max_block_size": null
+  },
+  "extraction": {
+    "S1": {
+      "rows": 441365,
+      "rows_with_address": 441365,
+      "rows_with_postal": 164303,
+      "rows_with_multiple_postal": 5097
+    },
+    "S2": {
+      "rows": 5034616,
+      "rows_with_signal": 1687696,
+      "rows_with_multiple_signals": 82782,
+      "distinct_signals": 77176,
+      "signal_occurrences": 1773078
+    },
+    "S3": {
+      "rows": 5285603,
+      "rows_with_signal": 1783322,
+      "rows_with_multiple_signals": 101587,
+      "distinct_signals": 77691,
+      "signal_occurrences": 1887319
+    }
+  },
+  "metrics": [
+    {
+      "strategy": "country_postal",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 194093,
+      "pair_recall": 0.2625368931067039,
+      "complete_entity_recall": 0.3305495451610345,
+      "candidate_pairs": 38878639,
+      "average_candidates": 88.0872724389111,
+      "median_candidates": 0.0,
+      "p95_candidates": 502.0,
+      "p99_candidates": 925.0,
+      "maximum_candidates": 3527,
+      "zero_candidate_entities": 277846,
+      "reduction_ratio": 0.9999825036760621,
+      "runtime_seconds": 9.311975600081496,
+      "process_rss_mb": 3828.82421875,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_postal": 164303
+      },
+      "block_statistics": {
+        "indexed_blocks": 88731,
+        "max_block_size": 2060,
+        "blocks_over_100": 4217,
+        "blocks_over_1000": 18,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_postal",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 214027,
+      "pair_recall": 0.2711079696954727,
+      "complete_entity_recall": 0.3263965198871682,
+      "candidate_pairs": 42873102,
+      "average_candidates": 97.13752109931688,
+      "median_candidates": 0.0,
+      "p95_candidates": 560.0,
+      "p99_candidates": 1031.0,
+      "maximum_candidates": 3995,
+      "zero_candidate_entities": 277722,
+      "reduction_ratio": 0.9999816222442172,
+      "runtime_seconds": 7.00879300001543,
+      "process_rss_mb": 4594.6015625,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_postal": 164303
+      },
+      "block_statistics": {
+        "indexed_blocks": 89218,
+        "max_block_size": 2280,
+        "blocks_over_100": 4448,
+        "blocks_over_1000": 31,
+        "blocks_over_10000": 0
+      }
+    }
+  ],
+  "experiment": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "python_executable": "C:\\Users\\ansh5\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "wall_clock_seconds": 697.6923603999894,
+    "cpu_seconds": 636.609375,
+    "peak_rss_mb": 7212.72265625,
+    "rss_sampling_interval_seconds": 0.25
+  }
+}

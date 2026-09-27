@@ -1,0 +1,298 @@
+{
+  "checkpoint": "M5.5.1",
+  "scope": {
+    "threshold": 250,
+    "validation_fraction": 0.2,
+    "seed": 42,
+    "validation_s1_entities": 441365,
+    "split_unit": "source1_entity",
+    "targets": ["S2", "S3"],
+    "experiments_rerun": false
+  },
+  "source_artifacts": [
+    {
+      "file": "data/processed/part3_m54_m4_m52_union_results.json",
+      "checkpoint_commits": ["f5bb10f", "23da36b"]
+    },
+    {
+      "file": "data/processed/part3_m54_m4_m52_m533_union_results.json",
+      "checkpoint_commits": ["acdb744"]
+    },
+    {
+      "file": "data/processed/part3_m54_m4_m52_m533_m534_union_results.json",
+      "checkpoint_commits": ["31224cb"]
+    },
+    {
+      "file": "part3_m54_cumulative_report.md",
+      "checkpoint_commits": ["1e4070b"]
+    }
+  ],
+  "cumulative": {
+    "S2": [
+      {
+        "stage": "M4",
+        "pair_recall": 0.389827,
+        "complete_entity_recall": 0.427555,
+        "candidate_pairs": 14999941,
+        "average_candidates_per_s1": 33.985,
+        "median_candidates_per_s1": 0,
+        "p95_candidates_per_s1": 168,
+        "p99_candidates_per_s1": 249,
+        "max_candidates_per_s1": 684,
+        "zero_candidate_s1_entities": 240031,
+        "reduction_ratio": 0.999993250,
+        "runtime_seconds": 65.310,
+        "cpu_seconds": 64.063
+      },
+      {
+        "stage": "M4 ∪ M5.2",
+        "pair_recall": 0.677909,
+        "complete_entity_recall": 0.679583,
+        "candidate_pairs": 39196644,
+        "average_candidates_per_s1": 88.808,
+        "median_candidates_per_s1": 51,
+        "p95_candidates_per_s1": 296,
+        "p99_candidates_per_s1": 434,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 111444,
+        "reduction_ratio": 0.999982361,
+        "runtime_seconds": 163.062,
+        "cpu_seconds": 159.734
+      },
+      {
+        "stage": "M4 ∪ M5.2 ∪ M5.3.3",
+        "pair_recall": 0.733469,
+        "complete_entity_recall": 0.727432,
+        "candidate_pairs": 48053985,
+        "average_candidates_per_s1": 108.876,
+        "median_candidates_per_s1": 78,
+        "p95_candidates_per_s1": 328,
+        "p99_candidates_per_s1": 458,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 82780,
+        "reduction_ratio": 0.999978375,
+        "runtime_seconds": 319.973,
+        "cpu_seconds": 312.203
+      },
+      {
+        "stage": "M4 ∪ M5.2 ∪ M5.3.3 ∪ M5.3.4",
+        "pair_recall": 0.733469,
+        "complete_entity_recall": 0.727432,
+        "candidate_pairs": 48053985,
+        "average_candidates_per_s1": 108.876,
+        "median_candidates_per_s1": 78,
+        "p95_candidates_per_s1": 328,
+        "p99_candidates_per_s1": 458,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 82780,
+        "reduction_ratio": 0.999978375,
+        "runtime_seconds": 443.278,
+        "cpu_seconds": 432.672
+      }
+    ],
+    "S3": [
+      {
+        "stage": "M4",
+        "pair_recall": 0.382646,
+        "complete_entity_recall": 0.410579,
+        "candidate_pairs": 15029807,
+        "average_candidates_per_s1": 34.053,
+        "median_candidates_per_s1": 0,
+        "p95_candidates_per_s1": 168,
+        "p99_candidates_per_s1": 249,
+        "max_candidates_per_s1": 724,
+        "zero_candidate_s1_entities": 242191,
+        "reduction_ratio": 0.999993557,
+        "runtime_seconds": 66.603,
+        "cpu_seconds": 65.406
+      },
+      {
+        "stage": "M4 ∪ M5.2",
+        "pair_recall": 0.659335,
+        "complete_entity_recall": 0.651615,
+        "candidate_pairs": 39106086,
+        "average_candidates_per_s1": 88.603,
+        "median_candidates_per_s1": 51,
+        "p95_candidates_per_s1": 296,
+        "p99_candidates_per_s1": 434,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 111968,
+        "reduction_ratio": 0.999983237,
+        "runtime_seconds": 167.819,
+        "cpu_seconds": 164.562
+      },
+      {
+        "stage": "M4 ∪ M5.2 ∪ M5.3.3",
+        "pair_recall": 0.715141,
+        "complete_entity_recall": 0.700434,
+        "candidate_pairs": 47725936,
+        "average_candidates_per_s1": 108.133,
+        "median_candidates_per_s1": 77,
+        "p95_candidates_per_s1": 327,
+        "p99_candidates_per_s1": 457,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 83737,
+        "reduction_ratio": 0.999979542,
+        "runtime_seconds": 339.701,
+        "cpu_seconds": 329.406
+      },
+      {
+        "stage": "M4 ∪ M5.2 ∪ M5.3.3 ∪ M5.3.4",
+        "pair_recall": 0.715141,
+        "complete_entity_recall": 0.700434,
+        "candidate_pairs": 47725936,
+        "average_candidates_per_s1": 108.133,
+        "median_candidates_per_s1": 77,
+        "p95_candidates_per_s1": 327,
+        "p99_candidates_per_s1": 457,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 83737,
+        "reduction_ratio": 0.999979542,
+        "runtime_seconds": 472.372,
+        "cpu_seconds": 459.656
+      }
+    ]
+  },
+  "marginal": {
+    "S2": [
+      {
+        "addition": "M5.2 added to M4",
+        "new_true_pairs": 212979,
+        "new_complete_entities": 111236,
+        "added_candidate_pairs": 24196703,
+        "marginal_pair_recall_gain": 0.288083,
+        "marginal_candidate_cost": 113.611,
+        "previously_missed_pairs": 451100,
+        "previous_misses_recovered": 0.47213
+      },
+      {
+        "addition": "M5.3.3 added to M4 ∪ M5.2",
+        "new_true_pairs": 41075,
+        "new_complete_entities": 21119,
+        "added_candidate_pairs": 8857341,
+        "marginal_pair_recall_gain": 0.055559,
+        "marginal_candidate_cost": 215.638,
+        "previously_missed_pairs": 238121,
+        "previous_misses_recovered": 0.1725
+      },
+      {
+        "addition": "M5.3.4 added to M4 ∪ M5.2 ∪ M5.3.3",
+        "new_true_pairs": 0,
+        "new_complete_entities": 0,
+        "added_candidate_pairs": 0,
+        "marginal_pair_recall_gain": 0.0,
+        "marginal_candidate_cost": null,
+        "previously_missed_pairs": 197046,
+        "previous_misses_recovered": 0.0
+      }
+    ],
+    "S3": [
+      {
+        "addition": "M5.2 added to M4",
+        "new_true_pairs": 218433,
+        "new_complete_entities": 106385,
+        "added_candidate_pairs": 24076279,
+        "marginal_pair_recall_gain": 0.276689,
+        "marginal_candidate_cost": 110.223,
+        "previously_missed_pairs": 487372,
+        "previous_misses_recovered": 0.44819
+      },
+      {
+        "addition": "M5.3.3 added to M4 ∪ M5.2",
+        "new_true_pairs": 44056,
+        "new_complete_entities": 21547,
+        "added_candidate_pairs": 8619850,
+        "marginal_pair_recall_gain": 0.055806,
+        "marginal_candidate_cost": 195.657,
+        "previously_missed_pairs": 268939,
+        "previous_misses_recovered": 0.16381
+      },
+      {
+        "addition": "M5.3.4 added to M4 ∪ M5.2 ∪ M5.3.3",
+        "new_true_pairs": 0,
+        "new_complete_entities": 0,
+        "added_candidate_pairs": 0,
+        "marginal_pair_recall_gain": 0.0,
+        "marginal_candidate_cost": null,
+        "previously_missed_pairs": 224883,
+        "previous_misses_recovered": 0.0
+      }
+    ]
+  },
+  "derived_metrics": {
+    "definitions": [
+      {
+        "metric_name": "marginal_pair_recall_gain",
+        "numerator": "new_true_pairs",
+        "denominator": "total ground-truth true pairs",
+        "formula": "new_true_pairs / total_ground_truth_true_pairs",
+        "source_artifact": "part3_m54_m4_m52_union_results.json or later cumulative artifact",
+        "source_fields": ["marginal_pair_recall", "new_true_pairs"]
+      },
+      {
+        "metric_name": "marginal_candidate_cost",
+        "numerator": "added_candidate_pairs",
+        "denominator": "new_true_pairs",
+        "formula": "added_candidate_pairs / new_true_pairs; null when new_true_pairs is zero",
+        "source_artifact": "applicable M5.4 cumulative artifact",
+        "source_fields": ["marginal_candidate_pairs", "marginal_candidate_cost", "new_recovered_pairs"]
+      },
+      {
+        "metric_name": "recall_gain_per_million_added_candidates",
+        "numerator": "marginal_pair_recall_gain",
+        "denominator": "added_candidate_pairs / 1000000",
+        "formula": "marginal_pair_recall_gain / (added_candidate_pairs / 1000000)",
+        "source_artifact": "applicable M5.4 cumulative artifact",
+        "source_fields": ["marginal_pair_recall", "marginal_candidate_pairs"]
+      },
+      {
+        "metric_name": "candidate_growth",
+        "numerator": "later_stage candidate_pairs - earlier_stage candidate_pairs",
+        "denominator": "earlier_stage candidate_pairs",
+        "formula": "(later_stage candidate_pairs - earlier_stage candidate_pairs) / earlier_stage candidate_pairs",
+        "source_artifact": "applicable M5.4 cumulative artifacts",
+        "source_fields": ["candidate_pairs"]
+      }
+    ],
+    "values": {
+      "S2": {
+        "M5.2_added_to_M4": {
+          "recall_gain_per_million_added_candidates": 0.0119058679,
+          "candidate_growth": 1.6131198783
+        },
+        "M5.3.3_added_to_M4_union_M5.2": {
+          "recall_gain_per_million_added_candidates": 0.00627265,
+          "candidate_growth": 0.2259719225
+        },
+        "M5.3.4_added_to_prior_union": {
+          "recall_gain_per_million_added_candidates": null,
+          "candidate_growth": 0.0
+        }
+      },
+      "S3": {
+        "M5.2_added_to_M4": {
+          "recall_gain_per_million_added_candidates": 0.0114921849,
+          "candidate_growth": 1.6019020737
+        },
+        "M5.3.3_added_to_M4_union_M5.2": {
+          "recall_gain_per_million_added_candidates": 0.0064740951,
+          "candidate_growth": 0.2204222125
+        },
+        "M5.3.4_added_to_prior_union": {
+          "recall_gain_per_million_added_candidates": null,
+          "candidate_growth": 0.0
+        }
+      }
+    }
+  },
+  "resource_observations": {
+    "measured": true,
+    "peak_rss_mb": {
+      "M5.4.3": 7228.85546875,
+      "M5.4.4": 7173.83203125
+    },
+    "source_artifact": "part3_m54_cumulative_report.md",
+    "note": "M5.5.1 performs no candidate-generation experiment."
+  },
+  "architecture_decision": null
+}

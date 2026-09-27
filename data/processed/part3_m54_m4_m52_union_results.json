@@ -1,0 +1,220 @@
+{
+  "checkpoint": "M5.4.2",
+  "validation": {
+    "fraction": 0.2,
+    "seed": 42,
+    "entities": 441365,
+    "split_unit": "source1_entity",
+    "target_indexes_use_labels": false
+  },
+  "config": {
+    "chunk_size": 100000,
+    "max_block_size": null
+  },
+  "threshold": 250,
+  "semantics": {
+    "union": "explicit per-S1 candidate ID set union",
+    "ground_truth_used_for_candidate_construction": false,
+    "m4_strategy": "country-aware rare-token name_clean_unicode",
+    "m52_strategy": "country-aware informative address token"
+  },
+  "sources": {
+    "S2": {
+      "target_source": "S2",
+      "strategies": [
+        {
+          "strategy": "m4_country_rare_token_name_clean_unicode_freq250",
+          "metric": {
+            "strategy": "country_rare_token_name_clean_unicode_freq250",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 288198,
+            "pair_recall": 0.3898265652010421,
+            "complete_entity_recall": 0.4275554246485335,
+            "candidate_pairs": 14999941,
+            "average_candidates": 33.98534319667395,
+            "median_candidates": 0.0,
+            "p95_candidates": 168.0,
+            "p99_candidates": 249.0,
+            "maximum_candidates": 684,
+            "zero_candidate_entities": 240031,
+            "reduction_ratio": 0.999993249665278,
+            "runtime_seconds": 65.75212479999755,
+            "process_rss_mb": 6405.82421875
+          },
+          "cpu_seconds": 64.125
+        },
+        {
+          "strategy": "m5.2_country_address_token_freq250",
+          "metric": {
+            "strategy": "country_address_token_freq250",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 354232,
+            "pair_recall": 0.4791464335085446,
+            "complete_entity_recall": 0.5149343513871739,
+            "candidate_pairs": 24394715,
+            "average_candidates": 55.27106816353812,
+            "median_candidates": 3.0,
+            "p95_candidates": 236.0,
+            "p99_candidates": 362.0,
+            "maximum_candidates": 934,
+            "zero_candidate_entities": 203818,
+            "reduction_ratio": 0.9999890217907059,
+            "runtime_seconds": 96.28398090007249,
+            "process_rss_mb": 6405.9140625
+          },
+          "cpu_seconds": 94.734375,
+          "availability": {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 240528
+          },
+          "block_statistics": {
+            "indexed_blocks": 544966,
+            "max_block_size": 250,
+            "blocks_over_100": 7122,
+            "blocks_over_1000": 0,
+            "blocks_over_10000": 0
+          }
+        },
+        {
+          "strategy": "m4_union_m52",
+          "metric": {
+            "strategy": "m4_union_m52",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 501177,
+            "pair_recall": 0.677909313970821,
+            "complete_entity_recall": 0.679582658344001,
+            "candidate_pairs": 39196644,
+            "average_candidates": 88.80777587710851,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 111444,
+            "reduction_ratio": 0.999982360566153,
+            "runtime_seconds": 162.03610570007004,
+            "process_rss_mb": 6405.921875
+          },
+          "cpu_seconds": 158.859375
+        }
+      ],
+      "marginal_m4_to_union": {
+        "previous_strategy": "country_rare_token_name_clean_unicode_freq250",
+        "added_strategy": "country_address_token_freq250",
+        "new_recovered_pairs": 212979,
+        "new_complete_entities": 111236,
+        "candidate_pairs_before": 14999941,
+        "candidate_pairs_after": 39196644,
+        "marginal_candidate_pairs": 24196703,
+        "marginal_pair_recall": 0.2880827487697789,
+        "marginal_candidate_cost": 113.61074566037027,
+        "previously_missed_pairs": 451100,
+        "percentage_of_previous_misses_recovered": 0.47213256484149857
+      }
+    },
+    "S3": {
+      "target_source": "S3",
+      "strategies": [
+        {
+          "strategy": "m4_country_rare_token_name_clean_unicode_freq250",
+          "metric": {
+            "strategy": "country_rare_token_name_clean_unicode_freq250",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 302081,
+            "pair_recall": 0.38264595865745016,
+            "complete_entity_recall": 0.4105785461012994,
+            "candidate_pairs": 15029807,
+            "average_candidates": 34.05301054682632,
+            "median_candidates": 0.0,
+            "p95_candidates": 168.0,
+            "p99_candidates": 249.0,
+            "maximum_candidates": 724,
+            "zero_candidate_entities": 242191,
+            "reduction_ratio": 0.9999935574029024,
+            "runtime_seconds": 65.56684880005196,
+            "process_rss_mb": 6385.36328125
+          },
+          "cpu_seconds": 64.296875
+        },
+        {
+          "strategy": "m5.2_country_address_token_freq250",
+          "metric": {
+            "strategy": "country_address_token_freq250",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 352510,
+            "pair_recall": 0.4465243656050455,
+            "complete_entity_recall": 0.4703680627145333,
+            "candidate_pairs": 24260236,
+            "average_candidates": 54.966379300578886,
+            "median_candidates": 3.0,
+            "p95_candidates": 236.0,
+            "p99_candidates": 362.0,
+            "maximum_candidates": 923,
+            "zero_candidate_entities": 203335,
+            "reduction_ratio": 0.9999896007363208,
+            "runtime_seconds": 100.16570210002828,
+            "process_rss_mb": 6385.4609375
+          },
+          "cpu_seconds": 98.796875,
+          "availability": {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 240191
+          },
+          "block_statistics": {
+            "indexed_blocks": 517580,
+            "max_block_size": 250,
+            "blocks_over_100": 6732,
+            "blocks_over_1000": 0,
+            "blocks_over_10000": 0
+          }
+        },
+        {
+          "strategy": "m4_union_m52",
+          "metric": {
+            "strategy": "m4_union_m52",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 520514,
+            "pair_recall": 0.6593350079105406,
+            "complete_entity_recall": 0.6516148765760765,
+            "candidate_pairs": 39106086,
+            "average_candidates": 88.60259875613154,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 111968,
+            "reduction_ratio": 0.999983236993252,
+            "runtime_seconds": 165.73255090008024,
+            "process_rss_mb": 6389.4609375
+          },
+          "cpu_seconds": 163.09375
+        }
+      ],
+      "marginal_m4_to_union": {
+        "previous_strategy": "country_rare_token_name_clean_unicode_freq250",
+        "added_strategy": "country_address_token_freq250",
+        "new_recovered_pairs": 218433,
+        "new_complete_entities": 106385,
+        "candidate_pairs_before": 15029807,
+        "candidate_pairs_after": 39106086,
+        "marginal_candidate_pairs": 24076279,
+        "marginal_pair_recall": 0.27668904925309046,
+        "marginal_candidate_cost": 110.22271817902973,
+        "previously_missed_pairs": 487372,
+        "percentage_of_previous_misses_recovered": 0.4481853696970692
+      }
+    }
+  },
+  "peak_rss_mb": 6437.296875
+}

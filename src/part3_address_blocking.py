@@ -142,6 +142,168 @@ def build_country_address_index(
     return index
 
 
+def build_all_country_address_indexes(
+    target_path: Path,
+    thresholds: tuple[int, ...],
+    config: BlockingConfig,
+    profiler: M52Profiler | None = None,
+) -> tuple[Counter[str], dict[int, dict[tuple[str, str], list[str]]]]:
+    """Build all threshold indexes during one normalized target scan."""
+    frequencies = build_address_token_frequencies(target_path, config, profiler)
+    indexes = {threshold: {} for threshold in thresholds}
+    if profiler:
+        profiler.counts["logical_threshold_indexes_built"] += len(thresholds)
+    phase = profiler.phase("index_construction") if profiler else None
+    if phase:
+        phase.__enter__()
+    try:
+        for row in _rows(target_path, config, profiler):
+            country = safe_unicode(row.country)
+            if not country:
+                continue
+            if profiler:
+                profiler.counts["address_token_recomputations"] += 1
+            for token in informative_address_tokens(row.business_address):
+                for threshold in thresholds:
+                    if frequencies[token] <= threshold:
+                        indexes[threshold].setdefault(
+                            (country, token), []
+                        ).append(row.entity_id)
+    finally:
+        if phase:
+            phase.__exit__(None, None, None)
+    return frequencies, indexes
+
+
+def generate_all_address_candidates(
+    target_source: str,
+    indexes: dict[int, dict[tuple[str, str], list[str]]],
+    frequencies: Counter[str],
+    thresholds: tuple[int, ...],
+    config: BlockingConfig,
+    source1_ids: set[str],
+    profiler: M52Profiler | None = None,
+) -> tuple[dict[int, BlockingRun], dict[int, dict[str, int]]]:
+    """Query all threshold indexes during one normalized Source 1 scan."""
+    started = perf_counter()
+    candidates = {threshold: {} for threshold in thresholds}
+    availability = {
+        threshold: {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 0,
+        }
+        for threshold in thresholds
+    }
+    if profiler:
+        profiler.counts["source1_query_passes"] += 1
+    phase = profiler.phase("candidate_retrieval_and_deduplication") if profiler else None
+    if phase:
+        phase.__enter__()
+    try:
+        for row in _rows(TRAIN_SOURCE1, config, profiler):
+            if row.entity_id not in source1_ids:
+                continue
+            country = safe_unicode(row.country)
+            if profiler:
+                profiler.counts["address_token_recomputations"] += 1
+            tokens = informative_address_tokens(row.business_address)
+            if not safe_unicode(row.business_address):
+                for values in availability.values():
+                    values["validation_entities_without_address"] += 1
+            for threshold in thresholds:
+                selected = [
+                    token for token in tokens if frequencies[token] <= threshold
+                ]
+                if selected:
+                    availability[threshold][
+                        "validation_entities_with_informative_token"
+                    ] += 1
+                values: set[str] = set()
+                if country:
+                    for token in selected:
+                        values.update(indexes[threshold].get((country, token), []))
+                candidates[threshold][row.entity_id] = values
+    finally:
+        if phase:
+            phase.__exit__(None, None, None)
+    elapsed = perf_counter() - started
+    return (
+        {
+            threshold: BlockingRun(
+                strategy=f"country_address_token_freq{threshold}",
+                target_source=target_source,
+                candidates=CandidateSet(candidates[threshold]),
+                elapsed_seconds=elapsed,
+            )
+            for threshold in thresholds
+        },
+        availability,
+    )
+
+
+def load_validation_address_rows(
+    config: BlockingConfig,
+    source1_ids: set[str],
+    profiler: M52Profiler | None = None,
+) -> list[tuple[str, str, tuple[str, ...], bool]]:
+    """Normalize validation Source 1 addresses once for all thresholds."""
+    rows: list[tuple[str, str, tuple[str, ...], bool]] = []
+    if profiler:
+        profiler.counts["source1_query_passes"] += 1
+    for row in _rows(TRAIN_SOURCE1, config, profiler):
+        if row.entity_id not in source1_ids:
+            continue
+        cleaned = safe_unicode(row.business_address)
+        if profiler:
+            profiler.counts["address_token_recomputations"] += 1
+        rows.append(
+            (
+                row.entity_id,
+                safe_unicode(row.country),
+                informative_address_tokens(row.business_address),
+                not cleaned,
+            )
+        )
+    return rows
+
+
+def generate_candidates_from_validation_rows(
+    target_source: str,
+    index: dict[tuple[str, str], list[str]],
+    frequencies: Counter[str],
+    threshold: int,
+    validation_rows: list[tuple[str, str, tuple[str, ...], bool]],
+    profiler: M52Profiler | None = None,
+) -> tuple[BlockingRun, dict[str, int]]:
+    started = perf_counter()
+    candidates: dict[str, set[str]] = {}
+    missing = 0
+    informative = 0
+    for source1_id, country, tokens, is_missing in validation_rows:
+        if is_missing:
+            missing += 1
+        selected = [token for token in tokens if frequencies[token] <= threshold]
+        if selected:
+            informative += 1
+        values: set[str] = set()
+        if country:
+            for token in selected:
+                values.update(index.get((country, token), []))
+        candidates[source1_id] = values
+    return (
+        BlockingRun(
+            strategy=f"country_address_token_freq{threshold}",
+            target_source=target_source,
+            candidates=CandidateSet(candidates),
+            elapsed_seconds=perf_counter() - started,
+        ),
+        {
+            "validation_entities_without_address": missing,
+            "validation_entities_with_informative_token": informative,
+        },
+    )
+
+
 def address_block_distribution(
     index: dict[tuple[str, str], list[str]],
     frequencies: Counter[str],
@@ -315,25 +477,26 @@ def run_address_token_evaluation(
     metrics: list[dict[str, object]] = []
     distributions: dict[str, object] = {}
     for source, target_path in target_paths.items():
-        frequencies = build_address_token_frequencies(target_path, config, profiler)
         distributions[source] = {}
         m4_missed, _ = _m4_missed_recovery(
             source, target_path, validation_ids, truth, config, profiler
         )
+        frequencies, indexes = build_all_country_address_indexes(
+            target_path, ADDRESS_TOKEN_THRESHOLDS, config, profiler
+        )
+        validation_rows = load_validation_address_rows(
+            config, validation_ids, profiler
+        )
         for threshold in ADDRESS_TOKEN_THRESHOLDS:
-            index = build_country_address_index(
-                target_path, frequencies, threshold, config, profiler
-            )
-            run, availability = generate_address_candidates(
-                target_path,
+            run, availability = generate_candidates_from_validation_rows(
                 source,
+                indexes[threshold],
                 frequencies,
                 threshold,
-                config,
-                validation_ids,
-                index,
+                validation_rows,
                 profiler,
             )
+            index = indexes[threshold]
             measured = evaluate_run(
                 run,
                 truth,

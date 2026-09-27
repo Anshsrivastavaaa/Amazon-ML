@@ -1,0 +1,468 @@
+{
+  "checkpoint": "M5.5.2",
+  "scope": {
+    "threshold": 250,
+    "source_checkpoint": "M5.5.1",
+    "experiments_rerun": false,
+    "lower_thresholds_extrapolated": false
+  },
+  "source_artifacts": [
+    "data/processed/part3_m54_m4_m52_union_results.json",
+    "data/processed/part3_m54_m4_m52_m533_union_results.json",
+    "data/processed/part3_m54_m4_m52_m533_m534_union_results.json",
+    "data/processed/part3_m551_evidence_normalized.json",
+    "part3_m551_evidence_normalized_report.md",
+    "part3_m54_cumulative_report.md"
+  ],
+  "assumptions": {
+    "scoring_time_ms_per_candidate": {
+      "low": 0.1,
+      "mid": 1.0,
+      "high": 5.0
+    },
+    "additional_memory_bytes_per_candidate": {
+      "low": 128,
+      "mid": 512,
+      "high": 2048
+    },
+    "note": "Scenario assumptions only; not measured downstream matcher performance."
+  },
+  "measured_inputs": {
+    "S2": [
+      {
+        "stage": "M4",
+        "candidate_pairs": 14999941,
+        "average_candidates_per_s1": 33.985,
+        "median_candidates_per_s1": 0,
+        "p95_candidates_per_s1": 168,
+        "p99_candidates_per_s1": 249,
+        "max_candidates_per_s1": 684,
+        "zero_candidate_s1_entities": 240031,
+        "runtime_seconds": 65.31,
+        "cpu_seconds": 64.063
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2",
+        "candidate_pairs": 39196644,
+        "average_candidates_per_s1": 88.808,
+        "median_candidates_per_s1": 51,
+        "p95_candidates_per_s1": 296,
+        "p99_candidates_per_s1": 434,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 111444,
+        "runtime_seconds": 163.062,
+        "cpu_seconds": 159.734
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3",
+        "candidate_pairs": 48053985,
+        "average_candidates_per_s1": 108.876,
+        "median_candidates_per_s1": 78,
+        "p95_candidates_per_s1": 328,
+        "p99_candidates_per_s1": 458,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 82780,
+        "runtime_seconds": 319.973,
+        "cpu_seconds": 312.203
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3 \u00e2\u02c6\u00aa M5.3.4",
+        "candidate_pairs": 48053985,
+        "average_candidates_per_s1": 108.876,
+        "median_candidates_per_s1": 78,
+        "p95_candidates_per_s1": 328,
+        "p99_candidates_per_s1": 458,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 82780,
+        "runtime_seconds": 443.278,
+        "cpu_seconds": 432.672
+      }
+    ],
+    "S3": [
+      {
+        "stage": "M4",
+        "candidate_pairs": 15029807,
+        "average_candidates_per_s1": 34.053,
+        "median_candidates_per_s1": 0,
+        "p95_candidates_per_s1": 168,
+        "p99_candidates_per_s1": 249,
+        "max_candidates_per_s1": 724,
+        "zero_candidate_s1_entities": 242191,
+        "runtime_seconds": 66.603,
+        "cpu_seconds": 65.406
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2",
+        "candidate_pairs": 39106086,
+        "average_candidates_per_s1": 88.603,
+        "median_candidates_per_s1": 51,
+        "p95_candidates_per_s1": 296,
+        "p99_candidates_per_s1": 434,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 111968,
+        "runtime_seconds": 167.819,
+        "cpu_seconds": 164.562
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3",
+        "candidate_pairs": 47725936,
+        "average_candidates_per_s1": 108.133,
+        "median_candidates_per_s1": 77,
+        "p95_candidates_per_s1": 327,
+        "p99_candidates_per_s1": 457,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 83737,
+        "runtime_seconds": 339.701,
+        "cpu_seconds": 329.406
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3 \u00e2\u02c6\u00aa M5.3.4",
+        "candidate_pairs": 47725936,
+        "average_candidates_per_s1": 108.133,
+        "median_candidates_per_s1": 77,
+        "p95_candidates_per_s1": 327,
+        "p99_candidates_per_s1": 457,
+        "max_candidates_per_s1": 1115,
+        "zero_candidate_s1_entities": 83737,
+        "runtime_seconds": 472.372,
+        "cpu_seconds": 459.656
+      }
+    ]
+  },
+  "modeled_outputs": {
+    "S2": [
+      {
+        "stage": "M4",
+        "candidate_pairs": 14999941,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 1499.994,
+            "scoring_cpu_seconds_equivalent": 1499.994,
+            "p95_s1_scoring_seconds": 0.0168,
+            "p99_s1_scoring_seconds": 0.0249,
+            "max_s1_scoring_seconds": 0.0684
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 14999.941,
+            "scoring_cpu_seconds_equivalent": 14999.941,
+            "p95_s1_scoring_seconds": 0.168,
+            "p99_s1_scoring_seconds": 0.249,
+            "max_s1_scoring_seconds": 0.684
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 74999.705,
+            "scoring_cpu_seconds_equivalent": 74999.705,
+            "p95_s1_scoring_seconds": 0.84,
+            "p99_s1_scoring_seconds": 1.245,
+            "max_s1_scoring_seconds": 3.42
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 1.788132,
+          "mid": 7.152529,
+          "high": 28.610117
+        }
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2",
+        "candidate_pairs": 39196644,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 3919.664,
+            "scoring_cpu_seconds_equivalent": 3919.664,
+            "p95_s1_scoring_seconds": 0.0296,
+            "p99_s1_scoring_seconds": 0.0434,
+            "max_s1_scoring_seconds": 0.1115
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 39196.644,
+            "scoring_cpu_seconds_equivalent": 39196.644,
+            "p95_s1_scoring_seconds": 0.296,
+            "p99_s1_scoring_seconds": 0.434,
+            "max_s1_scoring_seconds": 1.115
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 195983.22,
+            "scoring_cpu_seconds_equivalent": 195983.22,
+            "p95_s1_scoring_seconds": 1.48,
+            "p99_s1_scoring_seconds": 2.17,
+            "max_s1_scoring_seconds": 5.575
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 4.672604,
+          "mid": 18.690416,
+          "high": 74.761665
+        }
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3",
+        "candidate_pairs": 48053985,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 4805.399,
+            "scoring_cpu_seconds_equivalent": 4805.399,
+            "p95_s1_scoring_seconds": 0.0328,
+            "p99_s1_scoring_seconds": 0.0458,
+            "max_s1_scoring_seconds": 0.1115
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 48053.985,
+            "scoring_cpu_seconds_equivalent": 48053.985,
+            "p95_s1_scoring_seconds": 0.328,
+            "p99_s1_scoring_seconds": 0.458,
+            "max_s1_scoring_seconds": 1.115
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 240269.925,
+            "scoring_cpu_seconds_equivalent": 240269.925,
+            "p95_s1_scoring_seconds": 1.64,
+            "p99_s1_scoring_seconds": 2.29,
+            "max_s1_scoring_seconds": 5.575
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 5.728481,
+          "mid": 22.913926,
+          "high": 91.655703
+        }
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3 \u00e2\u02c6\u00aa M5.3.4",
+        "candidate_pairs": 48053985,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 4805.399,
+            "scoring_cpu_seconds_equivalent": 4805.399,
+            "p95_s1_scoring_seconds": 0.0328,
+            "p99_s1_scoring_seconds": 0.0458,
+            "max_s1_scoring_seconds": 0.1115
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 48053.985,
+            "scoring_cpu_seconds_equivalent": 48053.985,
+            "p95_s1_scoring_seconds": 0.328,
+            "p99_s1_scoring_seconds": 0.458,
+            "max_s1_scoring_seconds": 1.115
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 240269.925,
+            "scoring_cpu_seconds_equivalent": 240269.925,
+            "p95_s1_scoring_seconds": 1.64,
+            "p99_s1_scoring_seconds": 2.29,
+            "max_s1_scoring_seconds": 5.575
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 5.728481,
+          "mid": 22.913926,
+          "high": 91.655703
+        }
+      }
+    ],
+    "S3": [
+      {
+        "stage": "M4",
+        "candidate_pairs": 15029807,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 1502.981,
+            "scoring_cpu_seconds_equivalent": 1502.981,
+            "p95_s1_scoring_seconds": 0.0168,
+            "p99_s1_scoring_seconds": 0.0249,
+            "max_s1_scoring_seconds": 0.0724
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 15029.807,
+            "scoring_cpu_seconds_equivalent": 15029.807,
+            "p95_s1_scoring_seconds": 0.168,
+            "p99_s1_scoring_seconds": 0.249,
+            "max_s1_scoring_seconds": 0.724
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 75149.035,
+            "scoring_cpu_seconds_equivalent": 75149.035,
+            "p95_s1_scoring_seconds": 0.84,
+            "p99_s1_scoring_seconds": 1.245,
+            "max_s1_scoring_seconds": 3.62
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 1.791693,
+          "mid": 7.16677,
+          "high": 28.667082
+        }
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2",
+        "candidate_pairs": 39106086,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 3910.609,
+            "scoring_cpu_seconds_equivalent": 3910.609,
+            "p95_s1_scoring_seconds": 0.0296,
+            "p99_s1_scoring_seconds": 0.0434,
+            "max_s1_scoring_seconds": 0.1115
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 39106.086,
+            "scoring_cpu_seconds_equivalent": 39106.086,
+            "p95_s1_scoring_seconds": 0.296,
+            "p99_s1_scoring_seconds": 0.434,
+            "max_s1_scoring_seconds": 1.115
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 195530.43,
+            "scoring_cpu_seconds_equivalent": 195530.43,
+            "p95_s1_scoring_seconds": 1.48,
+            "p99_s1_scoring_seconds": 2.17,
+            "max_s1_scoring_seconds": 5.575
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 4.661809,
+          "mid": 18.647235,
+          "high": 74.58894
+        }
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3",
+        "candidate_pairs": 47725936,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 4772.594,
+            "scoring_cpu_seconds_equivalent": 4772.594,
+            "p95_s1_scoring_seconds": 0.0327,
+            "p99_s1_scoring_seconds": 0.0457,
+            "max_s1_scoring_seconds": 0.1115
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 47725.936,
+            "scoring_cpu_seconds_equivalent": 47725.936,
+            "p95_s1_scoring_seconds": 0.327,
+            "p99_s1_scoring_seconds": 0.457,
+            "max_s1_scoring_seconds": 1.115
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 238629.68,
+            "scoring_cpu_seconds_equivalent": 238629.68,
+            "p95_s1_scoring_seconds": 1.635,
+            "p99_s1_scoring_seconds": 2.285,
+            "max_s1_scoring_seconds": 5.575
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 5.689375,
+          "mid": 22.7575,
+          "high": 91.029999
+        }
+      },
+      {
+        "stage": "M4 \u00e2\u02c6\u00aa M5.2 \u00e2\u02c6\u00aa M5.3.3 \u00e2\u02c6\u00aa M5.3.4",
+        "candidate_pairs": 47725936,
+        "scenarios": [
+          {
+            "scenario": "low",
+            "assumed_scoring_time_ms_per_candidate": 0.1,
+            "total_scoring_seconds": 4772.594,
+            "scoring_cpu_seconds_equivalent": 4772.594,
+            "p95_s1_scoring_seconds": 0.0327,
+            "p99_s1_scoring_seconds": 0.0457,
+            "max_s1_scoring_seconds": 0.1115
+          },
+          {
+            "scenario": "mid",
+            "assumed_scoring_time_ms_per_candidate": 1.0,
+            "total_scoring_seconds": 47725.936,
+            "scoring_cpu_seconds_equivalent": 47725.936,
+            "p95_s1_scoring_seconds": 0.327,
+            "p99_s1_scoring_seconds": 0.457,
+            "max_s1_scoring_seconds": 1.115
+          },
+          {
+            "scenario": "high",
+            "assumed_scoring_time_ms_per_candidate": 5.0,
+            "total_scoring_seconds": 238629.68,
+            "scoring_cpu_seconds_equivalent": 238629.68,
+            "p95_s1_scoring_seconds": 1.635,
+            "p99_s1_scoring_seconds": 2.285,
+            "max_s1_scoring_seconds": 5.575
+          }
+        ],
+        "temporary_memory_gb": {
+          "low": 5.689375,
+          "mid": 22.7575,
+          "high": 91.029999
+        }
+      }
+    ]
+  },
+  "formulas": {
+    "total_scoring_seconds": "candidate_pairs * assumed_scoring_time_ms_per_candidate / 1000",
+    "scoring_cpu_seconds_equivalent": "same arithmetic as total_scoring_seconds; estimate, not measured CPU",
+    "temporary_memory_gb": "candidate_pairs * assumed_additional_memory_bytes_per_candidate / 1073741824",
+    "tail_scoring_seconds": "tail candidates per S1 * assumed_scoring_time_ms_per_candidate / 1000",
+    "candidate_workload_scale": "measured candidate_pairs and measured candidates/S1 distribution",
+    "blocking_cost": "measured runtime_seconds, cpu_seconds, and peak RSS from M5.4 evidence; not combined with modeled scoring cost"
+  },
+  "validation": {
+    "synthetic_fixture": {
+      "candidate_pairs": 1000,
+      "scoring_time_ms_per_candidate": 2,
+      "additional_memory_bytes_per_candidate": 512,
+      "expected_total_scoring_seconds": 2.0,
+      "expected_temporary_memory_gb": 0.0004768371582
+    },
+    "validated": true
+  },
+  "resource_reference": {
+    "m54_peak_rss_mb": [
+      7228.85546875,
+      7173.83203125
+    ],
+    "interpretation": "Measured blocking peak RSS reference only; not downstream matcher memory."
+  },
+  "architecture_decision": null
+}

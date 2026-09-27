@@ -302,7 +302,9 @@ def test_marginal_recovery_uses_candidate_identities_and_costs() -> None:
         "S1-3": {"S2-4"},
     }
 
-    result = measure_marginal_recovery(previous, added, truth, "S2")
+    result = measure_marginal_recovery(
+        previous, added, truth, "S2", {"S1-1", "S1-2", "S1-3", "S1-4"}
+    )
 
     assert result.new_recovered_pairs == 2
     assert result.new_complete_entities == 2
@@ -322,8 +324,78 @@ def test_marginal_recovery_rejects_target_mismatch() -> None:
             _run("m52", "S3", {}),
             {},
             "S2",
+            set(),
         )
     except ValueError as error:
         assert "same source" in str(error)
     else:
         raise AssertionError("mixed target sources should fail explicitly")
+
+
+def test_marginal_cost_is_added_candidates_per_new_pair() -> None:
+    previous = _run("m4", "S2", {"S1-1": set()})
+    added = _run("m52", "S2", {"S1-1": {"S2-1", "S2-2", "S2-3"}})
+
+    result = measure_marginal_recovery(
+        previous,
+        added,
+        {"S1-1": {"S2-1"}},
+        "S2",
+        {"S1-1"},
+    )
+
+    assert result.new_recovered_pairs == 1
+    assert result.candidate_pairs_after == 3
+    assert result.marginal_candidate_cost == 3.0
+
+
+def test_marginal_metrics_include_s1_absent_from_both_maps() -> None:
+    previous = _run("m4", "S2", {"S1-1": set()})
+    added = _run("m52", "S2", {"S1-1": set()})
+
+    result = measure_marginal_recovery(
+        previous,
+        added,
+        {"S1-1": set(), "S1-2": {"S2-1"}},
+        "S2",
+        {"S1-1", "S1-2"},
+    )
+
+    assert result.previously_missed_pairs == 1
+    assert result.new_recovered_pairs == 0
+    assert result.candidate_pairs_before == 0
+    assert result.candidate_pairs_after == 0
+    assert result.marginal_candidate_cost is None
+
+
+def test_marginal_metrics_handle_overlap_and_zero_recovery() -> None:
+    previous = _run("m4", "S2", {"S1-1": {"S2-1"}})
+    added = _run("m52", "S2", {"S1-1": {"S2-1", "S2-2"}})
+
+    result = measure_marginal_recovery(
+        previous,
+        added,
+        {"S1-1": {"S2-3"}},
+        "S2",
+        {"S1-1"},
+    )
+
+    assert result.new_recovered_pairs == 0
+    assert result.marginal_candidate_pairs == 1
+    assert result.marginal_candidate_cost is None
+
+
+def test_marginal_metrics_count_entity_completed_from_partial_recovery() -> None:
+    previous = _run("m4", "S2", {"S1-1": {"S2-1"}})
+    added = _run("m52", "S2", {"S1-1": {"S2-2"}})
+
+    result = measure_marginal_recovery(
+        previous,
+        added,
+        {"S1-1": {"S2-1", "S2-2"}},
+        "S2",
+        {"S1-1"},
+    )
+
+    assert result.new_recovered_pairs == 1
+    assert result.new_complete_entities == 1

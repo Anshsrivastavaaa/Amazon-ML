@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Iterable
 
 from src.part3_blocking import BlockingRun, CandidateSet
 
@@ -19,7 +20,7 @@ class MarginalRecovery:
     candidate_pairs_after: int
     marginal_candidate_pairs: int
     marginal_pair_recall: float
-    marginal_candidate_cost: float
+    marginal_candidate_cost: float | None
     previously_missed_pairs: int
     percentage_of_previous_misses_recovered: float
 
@@ -60,13 +61,18 @@ def measure_marginal_recovery(
     added: BlockingRun,
     truth: dict[str, set[str]],
     target_prefix: str,
+    validation_s1_ids: Iterable[str],
 ) -> MarginalRecovery:
-    """Measure explicit pair/entity recovery from adding one candidate run."""
+    """Measure recovery and candidate cost over an explicit S1 universe.
+
+    Candidate maps are treated as sparse maps over ``validation_s1_ids``;
+    missing entries have zero candidates. Ground truth is consulted only for
+    these evaluation metrics, never while constructing candidate maps.
+    """
     if previous.target_source != added.target_source:
         raise ValueError("Candidate runs must target the same source")
 
-    source1_ids = set(previous.candidates.source1_to_candidates)
-    source1_ids.update(added.candidates.source1_to_candidates)
+    source1_ids = set(validation_s1_ids)
     previous_pairs = 0
     added_pairs = 0
     new_complete_entities = 0
@@ -95,8 +101,8 @@ def measure_marginal_recovery(
             new_complete_entities += 1
 
     candidate_pairs_before = sum(
-        len(values)
-        for values in previous.candidates.source1_to_candidates.values()
+        len(previous.candidates.source1_to_candidates.get(source1_id, set()))
+        for source1_id in source1_ids
     )
     candidate_pairs_after = sum(
         len(previous.candidates.source1_to_candidates.get(source1_id, set())
@@ -119,9 +125,9 @@ def measure_marginal_recovery(
             else 0.0
         ),
         marginal_candidate_cost=(
-            new_recovered_pairs / marginal_candidate_pairs
-            if marginal_candidate_pairs
-            else 0.0
+            marginal_candidate_pairs / new_recovered_pairs
+            if new_recovered_pairs
+            else None
         ),
         previously_missed_pairs=previously_missed_pairs,
         percentage_of_previous_misses_recovered=(

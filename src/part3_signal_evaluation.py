@@ -108,6 +108,71 @@ def generate_signal_run(
     )
 
 
+def generate_signal_combination_run(
+    target_source: str,
+    strategy: str,
+    indexes: dict[str, SignalIndex],
+    rows: list[ValidationSignalRow],
+    signal_names: tuple[str, ...],
+    country_aware: bool,
+    max_frequencies: dict[str, int | None] | None = None,
+    combine: str = "intersection",
+) -> tuple[BlockingRun, dict[str, int]]:
+    """Generate candidates by combining reusable signal-family indexes."""
+    if not signal_names:
+        raise ValueError("At least one signal family is required")
+    if combine not in {"intersection", "union"}:
+        raise ValueError(f"Unknown signal combination: {combine}")
+    if any(name not in indexes for name in signal_names):
+        raise ValueError("Missing signal index for combination")
+
+    started = perf_counter()
+    candidates: dict[str, set[str]] = {}
+    availability: dict[str, int] = {
+        "validation_entities_without_address": sum(
+            not row.has_address for row in rows
+        )
+    }
+    for name in signal_names:
+        availability[f"validation_entities_with_{name}"] = 0
+
+    for row in rows:
+        country = row.country if country_aware else ""
+        per_signal: list[set[str]] = []
+        for name in signal_names:
+            index = indexes[name]
+            max_frequency = (
+                max_frequencies.get(name)
+                if max_frequencies is not None
+                else None
+            )
+            signals = tuple(
+                signal
+                for signal in getattr(row, name)
+                if max_frequency is None
+                or index.frequencies.get(signal, 0) <= max_frequency
+            )
+            if signals:
+                availability[f"validation_entities_with_{name}"] += 1
+            per_signal.append(lookup_signals(index, signals, country))
+
+        if combine == "intersection":
+            candidate_ids = set.intersection(*per_signal)
+        else:
+            candidate_ids = set.union(*per_signal)
+        candidates[row.source1_id] = candidate_ids
+
+    return (
+        BlockingRun(
+            strategy=strategy,
+            target_source=target_source,
+            candidates=CandidateSet(candidates),
+            elapsed_seconds=perf_counter() - started,
+        ),
+        availability,
+    )
+
+
 def _row_count(path: Path, config: BlockingConfig) -> int:
     return sum(
         len(chunk)

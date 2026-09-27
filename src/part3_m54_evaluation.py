@@ -47,7 +47,8 @@ from src.part3_token_blocking import (
 )
 
 
-THRESHOLD = 250
+BASE_THRESHOLD = 250
+THRESHOLD = int(os.environ.get("M553_THRESHOLD", "250"))
 VALIDATION_FRACTION = 0.2
 SEED = 42
 
@@ -152,14 +153,14 @@ def _evaluate_source(
     structures = build_token_structures(
         target_path,
         "name_clean_unicode",
-        THRESHOLD,
+        BASE_THRESHOLD,
         config,
         frequencies,
     )
     m4_runs = generate_runs_from_structures(
         source,
         "name_clean_unicode",
-        THRESHOLD,
+        BASE_THRESHOLD,
         frequencies,
         structures,
         validation_ids,
@@ -183,14 +184,14 @@ def _evaluate_source(
     address_index = build_country_address_index(
         target_path,
         address_frequencies,
-        THRESHOLD,
+        BASE_THRESHOLD,
         config,
     )
     m52_run, availability = generate_candidates_from_validation_rows(
         source,
         address_index,
         address_frequencies,
-        THRESHOLD,
+        BASE_THRESHOLD,
         validation_rows,
     )
     m52_runtime = perf_counter() - stage_start
@@ -226,7 +227,7 @@ def _evaluate_source(
     )
     m533_run, m533_availability = generate_signal_run(
         source,
-        "country_number_freq250",
+        f"country_number_freq{THRESHOLD}",
         number_index,
         number_rows,
         "number",
@@ -263,7 +264,7 @@ def _evaluate_source(
     )
     m534_run, m534_availability = generate_signal_combination_run(
         source,
-        "country_postal_number_freq250",
+        f"country_postal_number_freq{THRESHOLD}",
         {"postal": postal_index, "number": number_index},
         number_rows,
         ("postal", "number"),
@@ -372,7 +373,7 @@ def _evaluate_source(
         "marginal_union_to_m533": cumulative_marginal,
         "marginal_union_m533_to_m534": m534_marginal,
         "m533": {
-            "strategy": "country_number_freq250",
+            "strategy": f"country_number_freq{THRESHOLD}",
             "availability": m533_availability,
             "block_statistics": {
                 "indexed_blocks_at_threshold": len(number_block_sizes),
@@ -392,7 +393,7 @@ def _evaluate_source(
             "extraction": number_index.stats.as_dict(),
         },
         "m534": {
-            "strategy": "country_postal_number_freq250",
+            "strategy": f"country_postal_number_freq{THRESHOLD}",
             "semantics": "country-aware postal/number intersection",
             "availability": m534_availability,
             "block_statistics": {
@@ -440,7 +441,7 @@ def run() -> dict[str, object]:
             )
         }
     return {
-        "checkpoint": "M5.4.4",
+        "checkpoint": "M5.5.3-threshold",
         "validation": {
             "fraction": VALIDATION_FRACTION,
             "seed": SEED,
@@ -459,6 +460,7 @@ def run() -> dict[str, object]:
             "m534_strategy": (
                 "country-aware postal and number intersection"
             ),
+            "base_threshold": BASE_THRESHOLD,
         },
         "sources": sources,
         "peak_rss_mb": monitor.peak_mb,
@@ -466,10 +468,11 @@ def run() -> dict[str, object]:
 
 
 def main() -> None:
-    output = (
-        PROCESSED_DATA_DIR
-        / "part3_m54_m4_m52_m533_m534_union_results.json"
+    output_name = os.environ.get(
+        "M553_OUTPUT",
+        "part3_m54_m4_m52_m533_m534_union_results.json",
     )
+    output = PROCESSED_DATA_DIR / output_name
     output.write_text(json.dumps(run(), indent=2) + "\n", encoding="utf-8")
     print(output)
 

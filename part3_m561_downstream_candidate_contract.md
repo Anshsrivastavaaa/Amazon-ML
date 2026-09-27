@@ -382,4 +382,3 @@ This document should be reviewed for:
 
 M5.6.1 ends here. No candidate generation, reconstruction, matcher
 implementation, or benchmark is authorized by this checkpoint.
-

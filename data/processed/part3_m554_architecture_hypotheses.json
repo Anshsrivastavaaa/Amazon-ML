@@ -1,0 +1,54 @@
+{
+  "checkpoint": "M5.5.4",
+  "analysis_only": true,
+  "candidate_generation_executed": false,
+  "thresholds_cumulatively_measured": [5, 25, 250],
+  "thresholds_not_cumulatively_evaluated": [10, 50, 100],
+  "architecture_decision": null,
+  "resource_history_mb": {
+    "M5.4": 7228.85546875,
+    "threshold_5": 7621.75390625,
+    "threshold_25": 8438.96875
+  },
+  "cumulative_evidence": {
+    "S2": {
+      "M4": {"pair_recall": 0.389827, "entity_recall": 0.427555, "candidate_pairs": 14999941, "avg_candidates_s1": 33.985, "p95": 168, "p99": 249, "maximum": 684, "zero_candidate_s1": 240031},
+      "M4_union_M5.2": {"pair_recall": 0.677909, "entity_recall": 0.679583, "candidate_pairs": 39196644, "avg_candidates_s1": 88.808, "p95": 296, "p99": 434, "maximum": 1115, "zero_candidate_s1": 111444},
+      "M4_union_M5.2_union_M5.3.3_threshold_5": {"pair_recall": 0.680542, "entity_recall": 0.681991, "candidate_pairs": 39207683, "avg_candidates_s1": 88.833, "p95": 296, "p99": 434, "maximum": 1115, "zero_candidate_s1": 110009},
+      "M4_union_M5.2_union_M5.3.3_threshold_25": {"pair_recall": 0.688069, "entity_recall": 0.688344, "candidate_pairs": 39380227, "avg_candidates_s1": 89.224, "p95": 297, "p99": 435, "maximum": 1115, "zero_candidate_s1": 106236},
+      "M4_union_M5.2_union_M5.3.3_threshold_250": {"pair_recall": 0.733469, "entity_recall": 0.727432, "candidate_pairs": 48053985, "avg_candidates_s1": 108.876, "p95": 328, "p99": 458, "maximum": 1115, "zero_candidate_s1": 82780}
+    },
+    "S3": {
+      "M4": {"pair_recall": 0.382646, "entity_recall": 0.410579, "candidate_pairs": 15029807, "avg_candidates_s1": 34.053, "p95": 168, "p99": 249, "maximum": 724, "zero_candidate_s1": 242191},
+      "M4_union_M5.2": {"pair_recall": 0.659335, "entity_recall": 0.651615, "candidate_pairs": 39106086, "avg_candidates_s1": 88.603, "p95": 296, "p99": 434, "maximum": 1115, "zero_candidate_s1": 111968},
+      "M4_union_M5.2_union_M5.3.3_threshold_5": {"pair_recall": 0.662014, "entity_recall": 0.654098, "candidate_pairs": 39116510, "avg_candidates_s1": 88.626, "p95": 296, "p99": 434, "maximum": 1115, "zero_candidate_s1": 110504},
+      "M4_union_M5.2_union_M5.3.3_threshold_25": {"pair_recall": 0.669517, "entity_recall": 0.660533, "candidate_pairs": 39284812, "avg_candidates_s1": 89.008, "p95": 296, "p99": 434, "maximum": 1115, "zero_candidate_s1": 106782},
+      "M4_union_M5.2_union_M5.3.3_threshold_250": {"pair_recall": 0.715141, "entity_recall": 0.700434, "candidate_pairs": 47725936, "avg_candidates_s1": 108.133, "p95": 327, "p99": 457, "maximum": 1115, "zero_candidate_s1": 83737}
+    }
+  },
+  "marginal_evidence": {
+    "S2": {
+      "M5.3.3_threshold_5": {"new_pairs": 1946, "new_entities": 1063, "added_candidates": 11039, "candidate_cost": 5.672662, "previous_misses_recovered": 0.008172},
+      "M5.3.3_threshold_25": {"new_pairs": 7511, "new_entities": 3867, "added_candidates": 183583, "candidate_cost": 24.441885, "previous_misses_recovered": 0.031543},
+      "M5.3.3_threshold_250": {"new_pairs": 41075, "new_entities": 21119, "added_candidates": 8857341, "candidate_cost": 215.638},
+      "M5.3.4_threshold_5": {"new_pairs": 0, "new_entities": 0, "added_candidates": 0, "candidate_cost": null},
+      "M5.3.4_threshold_25": {"new_pairs": 0, "new_entities": 0, "added_candidates": 0, "candidate_cost": null},
+      "M5.3.4_threshold_250": {"new_pairs": 0, "new_entities": 0, "added_candidates": 0, "candidate_cost": null}
+    },
+    "S3": {
+      "M5.3.3_threshold_5": {"new_pairs": 2115, "new_entities": 1096, "added_candidates": 10424, "candidate_cost": 4.928605, "previous_misses_recovered": 0.007864},
+      "M5.3.3_threshold_25": {"new_pairs": 8038, "new_entities": 3936, "added_candidates": 178726, "candidate_cost": 22.235133, "previous_misses_recovered": 0.029888},
+      "M5.3.3_threshold_250": {"new_pairs": 44056, "new_entities": 21547, "added_candidates": 8619850, "candidate_cost": 195.657},
+      "M5.3.4_threshold_5": {"new_pairs": 0, "new_entities": 0, "added_candidates": 0, "candidate_cost": null},
+      "M5.3.4_threshold_25": {"new_pairs": 0, "new_entities": 0, "added_candidates": 0, "candidate_cost": null},
+      "M5.3.4_threshold_250": {"new_pairs": 0, "new_entities": 0, "added_candidates": 0, "candidate_cost": null}
+    }
+  },
+  "provenance": {
+    "M5.4": ["f5bb10f", "23da36b", "acdb744", "31224cb", "1e4070b"],
+    "M5.5.1": "3aecf47b348c31cd348a59fa865ba64c14feea93",
+    "M5.5.2": "71befb2aa50166f427151a7a68a03165542e01c1",
+    "threshold_5": "4b8964dade0711bc8235407072583e7131ddab62",
+    "threshold_25": "73a6f1ef543fc9bec679739aa59b491809a32918"
+  }
+}

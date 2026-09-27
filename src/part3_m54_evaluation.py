@@ -26,6 +26,7 @@ from src.part3_address_blocking import (
 from src.part3_blocking import (
     BlockingConfig,
     BlockingRun,
+    CandidateSet,
     build_validation_ids,
     evaluate_run,
     load_ground_truth,
@@ -34,6 +35,7 @@ from src.part3_candidate_union import (
     measure_marginal_recovery,
     union_named_candidate_sets,
 )
+from src.part3_candidate_persistence import persist_candidate_run
 from src.part3_signal_blocking import build_signal_index
 from src.part3_signal_evaluation import (
     generate_signal_combination_run,
@@ -51,6 +53,9 @@ BASE_THRESHOLD = 250
 THRESHOLD = int(os.environ.get("M553_THRESHOLD", "250"))
 VALIDATION_FRACTION = 0.2
 SEED = 42
+PERSIST_ROOT = os.environ.get("M56_PERSIST_ROOT")
+PERSIST_ONLY = os.environ.get("M56_PERSIST_ONLY") == "1"
+PERSIST_TARGET = os.environ.get("M56_TARGET_SOURCE")
 
 
 class PeakRSSMonitor:
@@ -175,6 +180,10 @@ def _evaluate_source(
     m4_cpu = _cpu_seconds() - stage_cpu
     del m4_runs, structures, frequencies
     gc.collect()
+    if PERSIST_ROOT:
+        persist_candidate_run(
+            m4_run, validation_ids, Path(PERSIST_ROOT), "m4", BASE_THRESHOLD
+        )
 
     stage_start = perf_counter()
     stage_cpu = _cpu_seconds()
@@ -205,6 +214,14 @@ def _evaluate_source(
         [("m4", m4_run), ("m52", m52_run)],
         "m4_union_m52",
     )
+    if PERSIST_ROOT:
+        persist_candidate_run(
+            union_run,
+            validation_ids,
+            Path(PERSIST_ROOT),
+            "m4_union_m52",
+            BASE_THRESHOLD,
+        )
     marginal = measure_marginal_recovery(
         m4_run,
         m52_run,
@@ -247,6 +264,14 @@ def _evaluate_source(
         [("m4_union_m52", union_run), ("m5.3.3", m533_run)],
         "m4_union_m52_union_m5.3.3",
     )
+    if PERSIST_ROOT:
+        persist_candidate_run(
+            cumulative_run,
+            validation_ids,
+            Path(PERSIST_ROOT),
+            f"m4_union_m52_union_m533_{THRESHOLD}",
+            THRESHOLD,
+        )
     cumulative_marginal = measure_marginal_recovery(
         union_run,
         m533_run,
@@ -254,47 +279,76 @@ def _evaluate_source(
         source,
         validation_ids,
     ).as_dict()
-    stage_start = perf_counter()
-    stage_cpu = _cpu_seconds()
-    postal_index = build_signal_index(
-        target_path,
-        "postal",
-        config,
-        country_aware=True,
-    )
-    m534_run, m534_availability = generate_signal_combination_run(
-        source,
-        f"country_postal_number_freq{THRESHOLD}",
-        {"postal": postal_index, "number": number_index},
-        number_rows,
-        ("postal", "number"),
-        True,
-        max_frequencies={"postal": THRESHOLD, "number": THRESHOLD},
-        combine="intersection",
-    )
-    m534_runtime = perf_counter() - stage_start
-    m534_cpu = _cpu_seconds() - stage_cpu
-    postal_block_sizes = [
-        len(values)
-        for key, values in postal_index.blocks.items()
-        if postal_index.frequencies[
-            key[1] if isinstance(key, tuple) else key
-        ] <= THRESHOLD
-    ]
-    cumulative_m534_run = union_named_candidate_sets(
-        [
-            ("m4_union_m52_union_m5.3.3", cumulative_run),
-            ("m5.3.4", m534_run),
-        ],
-        "m4_union_m52_union_m5.3.3_union_m5.3.4",
-    )
-    m534_marginal = measure_marginal_recovery(
-        cumulative_run,
-        m534_run,
-        truth,
-        source,
-        validation_ids,
-    ).as_dict()
+    if PERSIST_ONLY:
+        m534_run = BlockingRun(
+            strategy=f"country_postal_number_freq{THRESHOLD}",
+            target_source=source,
+            candidates=CandidateSet(
+                {source1_id: set() for source1_id in validation_ids}
+            ),
+            elapsed_seconds=0.0,
+        )
+        m534_availability: dict[str, int] = {}
+        m534_runtime = 0.0
+        m534_cpu = 0.0
+        postal_block_sizes: list[int] = []
+        postal_index = None
+        cumulative_m534_run = cumulative_run
+        m534_marginal = {
+            "previous_strategy": cumulative_run.strategy,
+            "added_strategy": m534_run.strategy,
+            "new_recovered_pairs": 0,
+            "new_complete_entities": 0,
+            "candidate_pairs_before": 0,
+            "candidate_pairs_after": 0,
+            "marginal_candidate_pairs": 0,
+            "marginal_pair_recall": 0.0,
+            "marginal_candidate_cost": None,
+            "previously_missed_pairs": 0,
+            "percentage_of_previous_misses_recovered": 0.0,
+        }
+    else:
+        stage_start = perf_counter()
+        stage_cpu = _cpu_seconds()
+        postal_index = build_signal_index(
+            target_path,
+            "postal",
+            config,
+            country_aware=True,
+        )
+        m534_run, m534_availability = generate_signal_combination_run(
+            source,
+            f"country_postal_number_freq{THRESHOLD}",
+            {"postal": postal_index, "number": number_index},
+            number_rows,
+            ("postal", "number"),
+            True,
+            max_frequencies={"postal": THRESHOLD, "number": THRESHOLD},
+            combine="intersection",
+        )
+        m534_runtime = perf_counter() - stage_start
+        m534_cpu = _cpu_seconds() - stage_cpu
+        postal_block_sizes = [
+            len(values)
+            for key, values in postal_index.blocks.items()
+            if postal_index.frequencies[
+                key[1] if isinstance(key, tuple) else key
+            ] <= THRESHOLD
+        ]
+        cumulative_m534_run = union_named_candidate_sets(
+            [
+                ("m4_union_m52_union_m5.3.3", cumulative_run),
+                ("m5.3.4", m534_run),
+            ],
+            "m4_union_m52_union_m5.3.3_union_m5.3.4",
+        )
+        m534_marginal = measure_marginal_recovery(
+            cumulative_run,
+            m534_run,
+            truth,
+            source,
+            validation_ids,
+        ).as_dict()
     results = {
         "target_source": source,
         "strategies": [
@@ -418,7 +472,9 @@ def _evaluate_source(
             },
             "runtime_seconds": m534_runtime,
             "cpu_seconds": m534_cpu,
-            "postal_extraction": postal_index.stats.as_dict(),
+            "postal_extraction": (
+                postal_index.stats.as_dict() if postal_index is not None else {}
+            ),
             "number_extraction": number_index.stats.as_dict(),
         },
     }
@@ -433,12 +489,16 @@ def run() -> dict[str, object]:
     validation_ids = build_validation_ids(VALIDATION_FRACTION, SEED)
     truth = load_ground_truth()
     with PeakRSSMonitor() as monitor:
+        source_paths = (("S2", TRAIN_SOURCE2), ("S3", TRAIN_SOURCE3))
+        if PERSIST_TARGET:
+            source_paths = tuple(
+                item for item in source_paths if item[0] == PERSIST_TARGET
+            )
+            if not source_paths:
+                raise ValueError(f"Unknown persistence target: {PERSIST_TARGET}")
         sources = {
             source: _evaluate_source(source, path, config, validation_ids, truth)
-            for source, path in (
-                ("S2", TRAIN_SOURCE2),
-                ("S3", TRAIN_SOURCE3),
-            )
+            for source, path in source_paths
         }
     return {
         "checkpoint": "M5.5.3-threshold",

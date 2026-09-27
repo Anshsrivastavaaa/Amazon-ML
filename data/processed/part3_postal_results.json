@@ -1,0 +1,185 @@
+{
+  "validation": {
+    "fraction": 0.2,
+    "seed": 42,
+    "entities": 441365,
+    "split_unit": "source1_entity",
+    "target_indexes_use_labels": false
+  },
+  "config": {
+    "chunk_size": 100000,
+    "max_block_size": null
+  },
+  "strategies": [
+    "postal",
+    "country_postal"
+  ],
+  "extraction": {
+    "S1": {
+      "rows": 441365,
+      "rows_with_address": 441365,
+      "rows_with_postal": 164303,
+      "rows_with_multiple_postal": 5097
+    },
+    "S2": {
+      "rows": 5034616,
+      "rows_with_signal": 1687696,
+      "rows_with_multiple_signals": 82782,
+      "distinct_signals": 77176,
+      "signal_occurrences": 1773078
+    },
+    "S3": {
+      "rows": 5285603,
+      "rows_with_signal": 1783322,
+      "rows_with_multiple_signals": 101587,
+      "distinct_signals": 77691,
+      "signal_occurrences": 1887319
+    }
+  },
+  "metrics": [
+    {
+      "strategy": "postal",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 194093,
+      "pair_recall": 0.2625368931067039,
+      "complete_entity_recall": 0.3305495451610345,
+      "candidate_pairs": 51345108,
+      "average_candidates": 116.33253203131196,
+      "median_candidates": 0.0,
+      "p95_candidates": 653.0,
+      "p99_candidates": 1429.0,
+      "maximum_candidates": 7133,
+      "zero_candidate_entities": 277737,
+      "reduction_ratio": 0.9999768934647585,
+      "runtime_seconds": 11.391971200006083,
+      "process_rss_mb": 4622.93359375,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_postal": 164303
+      },
+      "block_statistics": {
+        "indexed_blocks": 77176,
+        "max_block_size": 2443,
+        "blocks_over_100": 4361,
+        "blocks_over_1000": 56,
+        "blocks_over_10000": 0
+      },
+      "incremental_recovery": {
+        "m4_threshold250_missed_true_pairs": 451100,
+        "postal_recovered_m4_misses": 119088,
+        "m52_threshold250_missed_true_pairs": 385066,
+        "postal_recovered_m52_misses": 112104
+      }
+    },
+    {
+      "strategy": "country_postal",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 194093,
+      "pair_recall": 0.2625368931067039,
+      "complete_entity_recall": 0.3305495451610345,
+      "candidate_pairs": 38878639,
+      "average_candidates": 88.0872724389111,
+      "median_candidates": 0.0,
+      "p95_candidates": 502.0,
+      "p99_candidates": 925.0,
+      "maximum_candidates": 3527,
+      "zero_candidate_entities": 277846,
+      "reduction_ratio": 0.9999825036760621,
+      "runtime_seconds": 17.13746060000267,
+      "process_rss_mb": 3864.34765625,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_postal": 164303
+      },
+      "block_statistics": {
+        "indexed_blocks": 88731,
+        "max_block_size": 2060,
+        "blocks_over_100": 4217,
+        "blocks_over_1000": 18,
+        "blocks_over_10000": 0
+      },
+      "incremental_recovery": {
+        "m4_threshold250_missed_true_pairs": 451100,
+        "postal_recovered_m4_misses": 119088,
+        "m52_threshold250_missed_true_pairs": 385066,
+        "postal_recovered_m52_misses": 112104
+      }
+    },
+    {
+      "strategy": "postal",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 214027,
+      "pair_recall": 0.2711079696954727,
+      "complete_entity_recall": 0.3263965198871682,
+      "candidate_pairs": 56109195,
+      "average_candidates": 127.12651660190545,
+      "median_candidates": 0.0,
+      "p95_candidates": 706.0,
+      "p99_candidates": 1592.0,
+      "maximum_candidates": 8019,
+      "zero_candidate_entities": 277627,
+      "reduction_ratio": 0.9999759485310187,
+      "runtime_seconds": 8.47588010004256,
+      "process_rss_mb": 5437.72265625,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_postal": 164303
+      },
+      "block_statistics": {
+        "indexed_blocks": 77691,
+        "max_block_size": 2634,
+        "blocks_over_100": 4572,
+        "blocks_over_1000": 74,
+        "blocks_over_10000": 0
+      },
+      "incremental_recovery": {
+        "m4_threshold250_missed_true_pairs": 487372,
+        "postal_recovered_m4_misses": 132386,
+        "m52_threshold250_missed_true_pairs": 436943,
+        "postal_recovered_m52_misses": 126708
+      }
+    },
+    {
+      "strategy": "country_postal",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 214027,
+      "pair_recall": 0.2711079696954727,
+      "complete_entity_recall": 0.3263965198871682,
+      "candidate_pairs": 42873102,
+      "average_candidates": 97.13752109931688,
+      "median_candidates": 0.0,
+      "p95_candidates": 560.0,
+      "p99_candidates": 1031.0,
+      "maximum_candidates": 3995,
+      "zero_candidate_entities": 277722,
+      "reduction_ratio": 0.9999816222442172,
+      "runtime_seconds": 7.022681599948555,
+      "process_rss_mb": 4566.3125,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_postal": 164303
+      },
+      "block_statistics": {
+        "indexed_blocks": 89218,
+        "max_block_size": 2280,
+        "blocks_over_100": 4448,
+        "blocks_over_1000": 31,
+        "blocks_over_10000": 0
+      },
+      "incremental_recovery": {
+        "m4_threshold250_missed_true_pairs": 487372,
+        "postal_recovered_m4_misses": 132386,
+        "m52_threshold250_missed_true_pairs": 436943,
+        "postal_recovered_m52_misses": 126708
+      }
+    }
+  ]
+}

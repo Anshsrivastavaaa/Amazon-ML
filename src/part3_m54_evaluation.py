@@ -13,6 +13,7 @@ import pandas as pd
 
 from src.config import (
     PROCESSED_DATA_DIR,
+    TRAIN_SOURCE1,
     TRAIN_SOURCE2,
     TRAIN_SOURCE3,
 )
@@ -32,6 +33,11 @@ from src.part3_blocking import (
 from src.part3_candidate_union import (
     measure_marginal_recovery,
     union_named_candidate_sets,
+)
+from src.part3_signal_blocking import build_signal_index
+from src.part3_signal_evaluation import (
+    generate_signal_run,
+    load_validation_signal_rows,
 )
 from src.part3_token_blocking import (
     build_token_frequencies,
@@ -204,6 +210,48 @@ def _evaluate_source(
         source,
         validation_ids,
     ).as_dict()
+    stage_start = perf_counter()
+    stage_cpu = _cpu_seconds()
+    number_index = build_signal_index(
+        target_path,
+        "number",
+        config,
+        country_aware=True,
+    )
+    number_rows = load_validation_signal_rows(
+        TRAIN_SOURCE1,
+        validation_ids,
+        config,
+    )
+    m533_run, m533_availability = generate_signal_run(
+        source,
+        "country_number_freq250",
+        number_index,
+        number_rows,
+        "number",
+        True,
+        max_frequency=THRESHOLD,
+    )
+    m533_runtime = perf_counter() - stage_start
+    m533_cpu = _cpu_seconds() - stage_cpu
+    number_block_sizes = [
+        len(values)
+        for key, values in number_index.blocks.items()
+        if number_index.frequencies[
+            key[1] if isinstance(key, tuple) else key
+        ] <= THRESHOLD
+    ]
+    cumulative_run = union_named_candidate_sets(
+        [("m4_union_m52", union_run), ("m5.3.3", m533_run)],
+        "m4_union_m52_union_m5.3.3",
+    )
+    cumulative_marginal = measure_marginal_recovery(
+        union_run,
+        m533_run,
+        truth,
+        source,
+        validation_ids,
+    ).as_dict()
     results = {
         "target_source": source,
         "strategies": [
@@ -253,10 +301,44 @@ def _evaluate_source(
                 ),
                 "cpu_seconds": m4_cpu + m52_cpu,
             },
+            {
+                "strategy": "m4_union_m52_union_m5.3.3",
+                "metric": _metric(
+                    cumulative_run,
+                    truth,
+                    source,
+                    validation_ids,
+                    target_count,
+                    m4_runtime + m52_runtime + m533_runtime,
+                ),
+                "cpu_seconds": m4_cpu + m52_cpu + m533_cpu,
+            },
         ],
         "marginal_m4_to_union": marginal,
+        "marginal_union_to_m533": cumulative_marginal,
+        "m533": {
+            "strategy": "country_number_freq250",
+            "availability": m533_availability,
+            "block_statistics": {
+                "indexed_blocks_at_threshold": len(number_block_sizes),
+                "max_block_size": max(number_block_sizes, default=0),
+                "blocks_over_100": sum(
+                    size > 100 for size in number_block_sizes
+                ),
+                "blocks_over_1000": sum(
+                    size > 1000 for size in number_block_sizes
+                ),
+                "blocks_over_10000": sum(
+                    size > 10000 for size in number_block_sizes
+                ),
+            },
+            "runtime_seconds": m533_runtime,
+            "cpu_seconds": m533_cpu,
+            "extraction": number_index.stats.as_dict(),
+        },
     }
-    del m4_run, m52_run, union_run
+    del m4_run, m52_run, union_run, m533_run, cumulative_run
+    del number_index, number_rows
     gc.collect()
     return results
 
@@ -274,7 +356,7 @@ def run() -> dict[str, object]:
             )
         }
     return {
-        "checkpoint": "M5.4.2",
+        "checkpoint": "M5.4.3",
         "validation": {
             "fraction": VALIDATION_FRACTION,
             "seed": SEED,
@@ -289,6 +371,7 @@ def run() -> dict[str, object]:
             "ground_truth_used_for_candidate_construction": False,
             "m4_strategy": "country-aware rare-token name_clean_unicode",
             "m52_strategy": "country-aware informative address token",
+            "m533_strategy": "country-aware address number",
         },
         "sources": sources,
         "peak_rss_mb": monitor.peak_mb,
@@ -296,7 +379,10 @@ def run() -> dict[str, object]:
 
 
 def main() -> None:
-    output = PROCESSED_DATA_DIR / "part3_m54_m4_m52_union_results.json"
+    output = (
+        PROCESSED_DATA_DIR
+        / "part3_m54_m4_m52_m533_union_results.json"
+    )
     output.write_text(json.dumps(run(), indent=2) + "\n", encoding="utf-8")
     print(output)
 

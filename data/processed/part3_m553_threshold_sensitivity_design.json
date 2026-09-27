@@ -1,0 +1,79 @@
+{
+  "checkpoint": "M5.5.3",
+  "status": "design_only",
+  "experiments_executed": false,
+  "candidate_sets_generated": false,
+  "locked_artifacts_modified": false,
+  "protocol": {
+    "validation_fraction": 0.2,
+    "seed": 42,
+    "validation_s1_entities": 441365,
+    "split_unit": "source1_entity",
+    "python_version": "3.11",
+    "targets": ["S2", "S3"]
+  },
+  "already_measured_standalone_thresholds": [5, 10, 25, 50, 100, 250],
+  "primary_thresholds": [5, 25, 100, 250],
+  "conditional_refinement_thresholds": [10, 50],
+  "experiments": [
+    {
+      "id": "T-N",
+      "question": "Does M5.3.3 provide additional marginal recovery at lower thresholds?",
+      "family": "M5.3.3 country+number",
+      "cumulative_union": "M4 ∪ M5.2 ∪ M5.3.3(threshold)",
+      "preceding_union": "M4 ∪ M5.2",
+      "thresholds": [5, 25, 100, 250],
+      "targets": ["S2", "S3"],
+      "identities_required": "actual per-S1 candidate identities for M4, M5.2, and M5.3.3",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "T-C",
+      "question": "Does M5.3.4 provide incremental recovery at lower thresholds?",
+      "family": "M5.3.4 country+postal+number",
+      "cumulative_union": "M4 ∪ M5.2 ∪ M5.3.3(threshold) ∪ M5.3.4(threshold)",
+      "preceding_union": "M4 ∪ M5.2 ∪ M5.3.3(threshold)",
+      "thresholds": [5, 25, 100, 250],
+      "targets": ["S2", "S3"],
+      "identities_required": "actual per-S1 candidate identities for all four cumulative stages",
+      "execution_status": "not_run"
+    }
+  ],
+  "required_metrics": [
+    "pair_recall",
+    "complete_entity_recall",
+    "candidate_pairs",
+    "average_candidates_per_s1",
+    "median_candidates_per_s1",
+    "p95_candidates_per_s1",
+    "p99_candidates_per_s1",
+    "max_candidates_per_s1",
+    "zero_candidate_s1_entities",
+    "candidate_growth",
+    "newly_recovered_pairs",
+    "newly_recovered_entities",
+    "marginal_candidate_pairs",
+    "marginal_candidate_cost",
+    "previous_misses_recovered",
+    "runtime_seconds",
+    "cpu_seconds",
+    "peak_rss_mb",
+    "disk_usage"
+  ],
+  "resource_reference": {
+    "observed_m54_peak_rss_mb": 7228.85546875,
+    "reference_only": true,
+    "stop_conditions": [
+      "RSS approaches the observed reference and continues rising",
+      "abnormal disk growth or insufficient disk",
+      "runtime materially exceeds validated cumulative scale",
+      "unsafe candidate-map duplication",
+      "semantic or threshold-250 consistency failure"
+    ],
+    "one_target_at_a_time": true,
+    "cartesian_product": false
+  },
+  "output_artifact": "data/processed/part3_m553_threshold_sensitivity_results.json",
+  "output_report": "part3_m553_threshold_sensitivity_report.md",
+  "decision": null
+}

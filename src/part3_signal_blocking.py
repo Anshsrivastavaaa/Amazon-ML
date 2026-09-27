@@ -129,6 +129,66 @@ def build_signal_index(
     )
 
 
+def build_signal_indexes(
+    target_path: Path,
+    signal_names: tuple[str, ...],
+    config: BlockingConfig | None = None,
+    country_aware: bool = True,
+) -> dict[str, SignalIndex]:
+    """Build multiple signal indexes while parsing each target row once."""
+    config = config or BlockingConfig()
+    extractors = {name: _extractor(name) for name in signal_names}
+    frequencies = {name: Counter() for name in signal_names}
+    occurrences = {name: {} for name in signal_names}
+    row_counts = Counter()
+    rows_with_signal = Counter()
+    rows_with_multiple = Counter()
+
+    for entity_id, country, address, _ in _rows(target_path, config):
+        row_counts["rows"] += 1
+        parsed = parse_address(address)
+        parsed_values = {
+            "postal": tuple(dict.fromkeys(parsed.postal_candidates)),
+            "number": tuple(dict.fromkeys(parsed.numbers)),
+        }
+        for name, extract in extractors.items():
+            signals = parsed_values.get(name, extract(address))
+            if not signals:
+                continue
+            rows_with_signal[name] += 1
+            if len(signals) > 1:
+                rows_with_multiple[name] += 1
+            frequencies[name].update(signals)
+            for signal in signals:
+                if country_aware and not country:
+                    continue
+                key: SignalKey = (
+                    (country, signal) if country_aware else signal
+                )
+                occurrences[name].setdefault(key, set()).add(entity_id)
+
+    indexes: dict[str, SignalIndex] = {}
+    for name in signal_names:
+        blocks = {
+            key: tuple(sorted(entity_ids))
+            for key, entity_ids in occurrences[name].items()
+        }
+        indexes[name] = SignalIndex(
+            signal_name=name,
+            country_aware=country_aware,
+            frequencies=frequencies[name],
+            blocks=blocks,
+            stats=SignalExtractionStats(
+                rows=row_counts["rows"],
+                rows_with_signal=rows_with_signal[name],
+                rows_with_multiple_signals=rows_with_multiple[name],
+                distinct_signals=len(frequencies[name]),
+                signal_occurrences=sum(frequencies[name].values()),
+            ),
+        )
+    return indexes
+
+
 def extract_signal_values(value: object, signal_name: str) -> tuple[str, ...]:
     """Return deduplicated candidate values for one raw address."""
     return tuple(dict.fromkeys(_extractor(signal_name)(value)))
@@ -148,3 +208,19 @@ def lookup_signals(
         if signal:
             values.update(index.lookup(signal, country_clean))
     return values
+
+
+def without_country(index: SignalIndex) -> SignalIndex:
+    """Collapse a country-aware index without rereading the target source."""
+    merged: dict[str, set[str]] = {}
+    for key, entity_ids in index.blocks.items():
+        signal = key[1] if isinstance(key, tuple) else key
+        merged.setdefault(signal, set()).update(entity_ids)
+    blocks = {key: tuple(sorted(values)) for key, values in merged.items()}
+    return SignalIndex(
+        signal_name=index.signal_name,
+        country_aware=False,
+        frequencies=index.frequencies,
+        blocks=blocks,
+        stats=index.stats,
+    )

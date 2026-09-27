@@ -75,6 +75,7 @@ def generate_signal_run(
     rows: list[ValidationSignalRow],
     signal_name: str,
     country_aware: bool,
+    max_frequency: int | None = None,
 ) -> tuple[BlockingRun, dict[str, int]]:
     started = perf_counter()
     candidates: dict[str, set[str]] = {}
@@ -83,7 +84,12 @@ def generate_signal_run(
     for row in rows:
         if not row.has_address:
             missing += 1
-        signals = getattr(row, signal_name)
+        signals = tuple(
+            signal
+            for signal in getattr(row, signal_name)
+            if max_frequency is None
+            or index.frequencies.get(signal, 0) <= max_frequency
+        )
         if signals:
             with_signal += 1
         country = row.country if country_aware else ""
@@ -183,6 +189,88 @@ def run_postal_evaluation(
         },
         "config": config.__dict__,
         "strategies": ["postal", "country_postal"],
+        "extraction": extraction,
+        "metrics": metrics,
+    }
+
+
+def run_number_evaluation(
+    config: BlockingConfig | None = None,
+    validation_fraction: float = 0.2,
+    seed: int = 42,
+) -> dict[str, object]:
+    """Evaluate number-only and country+number blocking on both targets."""
+    config = config or BlockingConfig()
+    validation_ids = build_validation_ids(validation_fraction, seed)
+    truth = load_ground_truth()
+    rows = load_validation_signal_rows(TRAIN_SOURCE1, validation_ids, config)
+    metrics: list[dict[str, object]] = []
+    thresholds = (5, 10, 25, 50, 100, 250)
+    extraction: dict[str, object] = {
+        "S1": {
+            "rows": len(rows),
+            "rows_with_address": sum(row.has_address for row in rows),
+            "rows_with_number": sum(bool(row.number) for row in rows),
+            "rows_with_multiple_number": sum(len(row.number) > 1 for row in rows),
+        }
+    }
+    for source, target_path in {"S2": TRAIN_SOURCE2, "S3": TRAIN_SOURCE3}.items():
+        country_index = build_signal_index(
+            target_path, "number", config, country_aware=True
+        )
+        unconstrained = without_country(country_index)
+        extraction[source] = country_index.stats.as_dict()
+        for threshold in thresholds:
+            for strategy, index, country_aware in (
+                ("number", unconstrained, False),
+                ("country_number", country_index, True),
+            ):
+                run, availability = generate_signal_run(
+                    source,
+                    f"{strategy}_freq{threshold}",
+                    index,
+                    rows,
+                    "number",
+                    country_aware,
+                    max_frequency=threshold,
+                )
+                metric = evaluate_run(
+                    run,
+                    truth,
+                    source,
+                    len(validation_ids),
+                    _row_count(target_path, config),
+                ).as_dict()
+                metric["frequency_threshold"] = threshold
+                metric["availability"] = availability
+                sizes = [
+                    size
+                    for key, size in (
+                        (key, len(values)) for key, values in index.blocks.items()
+                    )
+                    if index.frequencies[
+                        key[1] if isinstance(key, tuple) else key
+                    ] <= threshold
+                ]
+                metric["block_statistics"] = {
+                    "indexed_blocks": len(sizes),
+                    "max_block_size": max(sizes, default=0),
+                    "blocks_over_100": sum(size > 100 for size in sizes),
+                    "blocks_over_1000": sum(size > 1000 for size in sizes),
+                    "blocks_over_10000": sum(size > 10000 for size in sizes),
+                }
+                metrics.append(metric)
+    return {
+        "validation": {
+            "fraction": validation_fraction,
+            "seed": seed,
+            "entities": len(validation_ids),
+            "split_unit": "source1_entity",
+            "target_indexes_use_labels": False,
+        },
+        "config": config.__dict__,
+        "strategies": ["number", "country_number"],
+        "frequency_thresholds": list(thresholds),
         "extraction": extraction,
         "metrics": metrics,
     }

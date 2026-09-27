@@ -1,0 +1,801 @@
+{
+  "validation": {
+    "fraction": 0.2,
+    "seed": 42,
+    "entities": 441365,
+    "split_unit": "source1_entity",
+    "target_indexes_use_labels": false
+  },
+  "config": {
+    "chunk_size": 100000,
+    "max_block_size": null
+  },
+  "strategies": [
+    "number",
+    "country_number"
+  ],
+  "frequency_thresholds": [
+    5,
+    10,
+    25,
+    50,
+    100,
+    250
+  ],
+  "extraction": {
+    "S1": {
+      "rows": 441365,
+      "rows_with_address": 441365,
+      "rows_with_number": 420345,
+      "rows_with_multiple_number": 131426
+    },
+    "S2": {
+      "rows": 5034616,
+      "rows_with_signal": 4497031,
+      "rows_with_multiple_signals": 1393781,
+      "distinct_signals": 96980,
+      "signal_occurrences": 6640377
+    },
+    "S3": {
+      "rows": 5285603,
+      "rows_with_signal": 4724818,
+      "rows_with_multiple_signals": 1607354,
+      "distinct_signals": 97664,
+      "signal_occurrences": 7014731
+    }
+  },
+  "metrics": [
+    {
+      "strategy": "number_freq5",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 7225,
+      "pair_recall": 0.009772784452277701,
+      "complete_entity_recall": 0.1383095623803428,
+      "candidate_pairs": 18205,
+      "average_candidates": 0.041247040431388986,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 2.0,
+      "maximum_candidates": 9,
+      "zero_candidate_entities": 435091,
+      "reduction_ratio": 0.9999999918073116,
+      "runtime_seconds": 1.3124321000650525,
+      "process_rss_mb": 2479.75390625,
+      "frequency_threshold": 5,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 7175
+      },
+      "block_statistics": {
+        "indexed_blocks": 64614,
+        "max_block_size": 5,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq5",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 7225,
+      "pair_recall": 0.009772784452277701,
+      "complete_entity_recall": 0.1383095623803428,
+      "candidate_pairs": 17401,
+      "average_candidates": 0.03942541887100246,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 2.0,
+      "maximum_candidates": 8,
+      "zero_candidate_entities": 435199,
+      "reduction_ratio": 0.9999999921691309,
+      "runtime_seconds": 1.2774968000594527,
+      "process_rss_mb": 2482.3046875,
+      "frequency_threshold": 5,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 7175
+      },
+      "block_statistics": {
+        "indexed_blocks": 66119,
+        "max_block_size": 5,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq10",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 13140,
+      "pair_recall": 0.017773617675145882,
+      "complete_entity_recall": 0.14426608362693008,
+      "candidate_pairs": 54936,
+      "average_candidates": 0.12446841049924666,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 6.0,
+      "maximum_candidates": 16,
+      "zero_candidate_entities": 430450,
+      "reduction_ratio": 0.9999999752774769,
+      "runtime_seconds": 1.3327754000201821,
+      "process_rss_mb": 2485.921875,
+      "frequency_threshold": 10,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 11813
+      },
+      "block_statistics": {
+        "indexed_blocks": 74236,
+        "max_block_size": 10,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq10",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 13140,
+      "pair_recall": 0.017773617675145882,
+      "complete_entity_recall": 0.14426608362693008,
+      "candidate_pairs": 52167,
+      "average_candidates": 0.11819469146851246,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 5.0,
+      "maximum_candidates": 16,
+      "zero_candidate_entities": 430590,
+      "reduction_ratio": 0.9999999765235935,
+      "runtime_seconds": 1.3401845000917092,
+      "process_rss_mb": 2486.59375,
+      "frequency_threshold": 10,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 11813
+      },
+      "block_statistics": {
+        "indexed_blocks": 77177,
+        "max_block_size": 10,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq25",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 25638,
+      "pair_recall": 0.03467884398442847,
+      "complete_entity_recall": 0.15700610605734483,
+      "candidate_pairs": 231094,
+      "average_candidates": 0.5235893194974681,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 18.0,
+      "maximum_candidates": 51,
+      "zero_candidate_entities": 420317,
+      "reduction_ratio": 0.9999998960021341,
+      "runtime_seconds": 0.6548099999781698,
+      "process_rss_mb": 2489.90625,
+      "frequency_threshold": 25,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 21942
+      },
+      "block_statistics": {
+        "indexed_blocks": 82531,
+        "max_block_size": 25,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq25",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 25638,
+      "pair_recall": 0.03467884398442847,
+      "complete_entity_recall": 0.15700610605734483,
+      "candidate_pairs": 217545,
+      "average_candidates": 0.492891371087422,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 17.0,
+      "maximum_candidates": 51,
+      "zero_candidate_entities": 420518,
+      "reduction_ratio": 0.9999999020995105,
+      "runtime_seconds": 0.7286597000202164,
+      "process_rss_mb": 2495.4375,
+      "frequency_threshold": 25,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 21942
+      },
+      "block_statistics": {
+        "indexed_blocks": 87964,
+        "max_block_size": 25,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq50",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 41708,
+      "pair_recall": 0.056415680821536106,
+      "complete_entity_recall": 0.17343921697461284,
+      "candidate_pairs": 739688,
+      "average_candidates": 1.6759099611432715,
+      "median_candidates": 0.0,
+      "p95_candidates": 12.0,
+      "p99_candidates": 42.0,
+      "maximum_candidates": 118,
+      "zero_candidate_entities": 407050,
+      "reduction_ratio": 0.9999996671225847,
+      "runtime_seconds": 0.7490839000092819,
+      "process_rss_mb": 2516.03515625,
+      "frequency_threshold": 50,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 35205
+      },
+      "block_statistics": {
+        "indexed_blocks": 87093,
+        "max_block_size": 50,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq50",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 41708,
+      "pair_recall": 0.056415680821536106,
+      "complete_entity_recall": 0.17343921697461284,
+      "candidate_pairs": 690588,
+      "average_candidates": 1.5646641668460344,
+      "median_candidates": 0.0,
+      "p95_candidates": 11.0,
+      "p99_candidates": 41.0,
+      "maximum_candidates": 98,
+      "zero_candidate_entities": 407370,
+      "reduction_ratio": 0.9999996892187673,
+      "runtime_seconds": 0.8284063000464812,
+      "process_rss_mb": 2520.328125,
+      "frequency_threshold": 50,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 35205
+      },
+      "block_statistics": {
+        "indexed_blocks": 94680,
+        "max_block_size": 50,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq100",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 69762,
+      "pair_recall": 0.09436248982142519,
+      "complete_entity_recall": 0.20223851007669388,
+      "candidate_pairs": 2502573,
+      "average_candidates": 5.670075787613427,
+      "median_candidates": 0.0,
+      "p95_candidates": 54.0,
+      "p99_candidates": 90.0,
+      "maximum_candidates": 225,
+      "zero_candidate_entities": 383664,
+      "reduction_ratio": 0.9999988737818758,
+      "runtime_seconds": 1.0426197999622673,
+      "process_rss_mb": 2623.72265625,
+      "frequency_threshold": 100,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 58582
+      },
+      "block_statistics": {
+        "indexed_blocks": 91049,
+        "max_block_size": 100,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq100",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 69762,
+      "pair_recall": 0.09436248982142519,
+      "complete_entity_recall": 0.20223851007669388,
+      "candidate_pairs": 2296959,
+      "average_candidates": 5.204216464830695,
+      "median_candidates": 0.0,
+      "p95_candidates": 49.0,
+      "p99_candidates": 86.0,
+      "maximum_candidates": 225,
+      "zero_candidate_entities": 384041,
+      "reduction_ratio": 0.999998966313128,
+      "runtime_seconds": 1.1189296001102775,
+      "process_rss_mb": 2616.8515625,
+      "frequency_threshold": 100,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 58582
+      },
+      "block_statistics": {
+        "indexed_blocks": 101447,
+        "max_block_size": 100,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq250",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 127256,
+      "pair_recall": 0.17213085927460917,
+      "complete_entity_recall": 0.2616587178412425,
+      "candidate_pairs": 10624896,
+      "average_candidates": 24.072810485652465,
+      "median_candidates": 0.0,
+      "p95_candidates": 170.0,
+      "p99_candidates": 235.0,
+      "maximum_candidates": 958,
+      "zero_candidate_entities": 336379,
+      "reduction_ratio": 0.9999952185409005,
+      "runtime_seconds": 2.7019380000419915,
+      "process_rss_mb": 3034.06640625,
+      "frequency_threshold": 250,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 105825
+      },
+      "block_statistics": {
+        "indexed_blocks": 94439,
+        "max_block_size": 250,
+        "blocks_over_100": 3390,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq250",
+      "target_source": "S2",
+      "validation_entities": 441365,
+      "true_pairs": 739298,
+      "recovered_pairs": 127256,
+      "pair_recall": 0.17213085927460917,
+      "complete_entity_recall": 0.2616587178412425,
+      "candidate_pairs": 9306502,
+      "average_candidates": 21.08572723256262,
+      "median_candidates": 0.0,
+      "p95_candidates": 151.0,
+      "p99_candidates": 215.0,
+      "maximum_candidates": 463,
+      "zero_candidate_entities": 336778,
+      "reduction_ratio": 0.9999958118499539,
+      "runtime_seconds": 2.0742613999173045,
+      "process_rss_mb": 3042.3984375,
+      "frequency_threshold": 250,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 105825
+      },
+      "block_statistics": {
+        "indexed_blocks": 107905,
+        "max_block_size": 247,
+        "blocks_over_100": 2971,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq5",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 7742,
+      "pair_recall": 0.009806790271238439,
+      "complete_entity_recall": 0.12867807823456776,
+      "candidate_pairs": 17859,
+      "average_candidates": 0.04046310876485448,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 2.0,
+      "maximum_candidates": 9,
+      "zero_candidate_entities": 435269,
+      "reduction_ratio": 0.9999999923446561,
+      "runtime_seconds": 0.5948132000630721,
+      "process_rss_mb": 2611.3515625,
+      "frequency_threshold": 5,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 6788
+      },
+      "block_statistics": {
+        "indexed_blocks": 64483,
+        "max_block_size": 5,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq5",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 7742,
+      "pair_recall": 0.009806790271238439,
+      "complete_entity_recall": 0.12867807823456776,
+      "candidate_pairs": 17218,
+      "average_candidates": 0.03901079605315329,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 2.0,
+      "maximum_candidates": 9,
+      "zero_candidate_entities": 435318,
+      "reduction_ratio": 0.9999999926194237,
+      "runtime_seconds": 0.7054118999512866,
+      "process_rss_mb": 2566.125,
+      "frequency_threshold": 5,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 6788
+      },
+      "block_statistics": {
+        "indexed_blocks": 65945,
+        "max_block_size": 5,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq10",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 13908,
+      "pair_recall": 0.01761726157225319,
+      "complete_entity_recall": 0.1345643628289511,
+      "candidate_pairs": 53655,
+      "average_candidates": 0.12156605077430245,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 6.0,
+      "maximum_candidates": 19,
+      "zero_candidate_entities": 430796,
+      "reduction_ratio": 0.9999999770005332,
+      "runtime_seconds": 0.5785166000714526,
+      "process_rss_mb": 2566.1328125,
+      "frequency_threshold": 10,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 11261
+      },
+      "block_statistics": {
+        "indexed_blocks": 74415,
+        "max_block_size": 10,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq10",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 13908,
+      "pair_recall": 0.01761726157225319,
+      "complete_entity_recall": 0.1345643628289511,
+      "candidate_pairs": 51010,
+      "average_candidates": 0.11557327835238408,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 5.0,
+      "maximum_candidates": 18,
+      "zero_candidate_entities": 430862,
+      "reduction_ratio": 0.9999999781343248,
+      "runtime_seconds": 0.6653918999945745,
+      "process_rss_mb": 2566.7109375,
+      "frequency_threshold": 10,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 11261
+      },
+      "block_statistics": {
+        "indexed_blocks": 77469,
+        "max_block_size": 10,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq25",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 27425,
+      "pair_recall": 0.03473924350151307,
+      "complete_entity_recall": 0.1472500084963692,
+      "candidate_pairs": 226073,
+      "average_candidates": 0.5122132475388851,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 18.0,
+      "maximum_candidates": 45,
+      "zero_candidate_entities": 420961,
+      "reduction_ratio": 0.9999999030927507,
+      "runtime_seconds": 1.3821130000287667,
+      "process_rss_mb": 2569.78515625,
+      "frequency_threshold": 25,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 21095
+      },
+      "block_statistics": {
+        "indexed_blocks": 82893,
+        "max_block_size": 25,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq25",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 27425,
+      "pair_recall": 0.03473924350151307,
+      "complete_entity_recall": 0.1472500084963692,
+      "candidate_pairs": 213201,
+      "average_candidates": 0.4830491769850351,
+      "median_candidates": 0.0,
+      "p95_candidates": 0.0,
+      "p99_candidates": 17.0,
+      "maximum_candidates": 41,
+      "zero_candidate_entities": 421051,
+      "reduction_ratio": 0.9999999086103938,
+      "runtime_seconds": 1.4422674999805167,
+      "process_rss_mb": 2575.63671875,
+      "frequency_threshold": 25,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 21095
+      },
+      "block_statistics": {
+        "indexed_blocks": 88493,
+        "max_block_size": 25,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq50",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 43897,
+      "pair_recall": 0.05560432349994236,
+      "complete_entity_recall": 0.163173337260544,
+      "candidate_pairs": 701391,
+      "average_candidates": 1.5891405072898848,
+      "median_candidates": 0.0,
+      "p95_candidates": 11.0,
+      "p99_candidates": 42.0,
+      "maximum_candidates": 99,
+      "zero_candidate_entities": 408515,
+      "reduction_ratio": 0.999999699345466,
+      "runtime_seconds": 1.393500000005588,
+      "process_rss_mb": 2600.1796875,
+      "frequency_threshold": 50,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 33540
+      },
+      "block_statistics": {
+        "indexed_blocks": 87456,
+        "max_block_size": 50,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq50",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 43897,
+      "pair_recall": 0.05560432349994236,
+      "complete_entity_recall": 0.163173337260544,
+      "candidate_pairs": 657970,
+      "average_candidates": 1.4907616145367213,
+      "median_candidates": 0.0,
+      "p95_candidates": 10.0,
+      "p99_candidates": 40.0,
+      "maximum_candidates": 90,
+      "zero_candidate_entities": 408628,
+      "reduction_ratio": 0.9999997179580807,
+      "runtime_seconds": 1.610721300006844,
+      "process_rss_mb": 2610.875,
+      "frequency_threshold": 50,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 33540
+      },
+      "block_statistics": {
+        "indexed_blocks": 95211,
+        "max_block_size": 50,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq100",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 74136,
+      "pair_recall": 0.09390806039118225,
+      "complete_entity_recall": 0.19223771708223353,
+      "candidate_pairs": 2413298,
+      "average_candidates": 5.467805557758318,
+      "median_candidates": 0.0,
+      "p95_candidates": 52.0,
+      "p99_candidates": 91.0,
+      "maximum_candidates": 232,
+      "zero_candidate_entities": 385832,
+      "reduction_ratio": 0.9999989655285201,
+      "runtime_seconds": 1.8688978999853134,
+      "process_rss_mb": 2707.76171875,
+      "frequency_threshold": 100,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 56219
+      },
+      "block_statistics": {
+        "indexed_blocks": 91508,
+        "max_block_size": 100,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq100",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 74136,
+      "pair_recall": 0.09390806039118225,
+      "complete_entity_recall": 0.19223771708223353,
+      "candidate_pairs": 2220037,
+      "average_candidates": 5.029934408029636,
+      "median_candidates": 0.0,
+      "p95_candidates": 48.0,
+      "p99_candidates": 86.0,
+      "maximum_candidates": 204,
+      "zero_candidate_entities": 385965,
+      "reduction_ratio": 0.999999048370752,
+      "runtime_seconds": 1.8598361000185832,
+      "process_rss_mb": 2797.48046875,
+      "frequency_threshold": 100,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 56219
+      },
+      "block_statistics": {
+        "indexed_blocks": 102072,
+        "max_block_size": 100,
+        "blocks_over_100": 0,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "number_freq250",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 134734,
+      "pair_recall": 0.17066753815616637,
+      "complete_entity_recall": 0.2508853216725386,
+      "candidate_pairs": 10295428,
+      "average_candidates": 23.3263353460288,
+      "median_candidates": 0.0,
+      "p95_candidates": 169.0,
+      "p99_candidates": 234.0,
+      "maximum_candidates": 996,
+      "zero_candidate_entities": 339962,
+      "reduction_ratio": 0.9999955868166137,
+      "runtime_seconds": 3.0617499001091346,
+      "process_rss_mb": 3174.76171875,
+      "frequency_threshold": 250,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 102073
+      },
+      "block_statistics": {
+        "indexed_blocks": 94968,
+        "max_block_size": 250,
+        "blocks_over_100": 3460,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    },
+    {
+      "strategy": "country_number_freq250",
+      "target_source": "S3",
+      "validation_entities": 441365,
+      "true_pairs": 789453,
+      "recovered_pairs": 134734,
+      "pair_recall": 0.17066753815616637,
+      "complete_entity_recall": 0.2508853216725386,
+      "candidate_pairs": 9059948,
+      "average_candidates": 20.527110214901498,
+      "median_candidates": 0.0,
+      "p95_candidates": 150.0,
+      "p99_candidates": 215.0,
+      "maximum_candidates": 460,
+      "zero_candidate_entities": 340104,
+      "reduction_ratio": 0.9999961164108967,
+      "runtime_seconds": 1.9749893000116572,
+      "process_rss_mb": 3271.57421875,
+      "frequency_threshold": 250,
+      "availability": {
+        "validation_entities_without_address": 0,
+        "validation_entities_with_number": 102073
+      },
+      "block_statistics": {
+        "indexed_blocks": 108601,
+        "max_block_size": 246,
+        "blocks_over_100": 3040,
+        "blocks_over_1000": 0,
+        "blocks_over_10000": 0
+      }
+    }
+  ],
+  "experiment": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "python_executable": "C:\\Users\\ansh5\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "wall_clock_seconds": 452.9157258999767,
+    "cpu_seconds": 444.71875,
+    "peak_rss_mb": 3636.15234375,
+    "rss_sampling_interval_seconds": 0.25
+  }
+}

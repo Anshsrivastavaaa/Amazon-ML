@@ -1,0 +1,501 @@
+{
+  "checkpoint": "M5.5.3-threshold",
+  "validation": {
+    "fraction": 0.2,
+    "seed": 42,
+    "entities": 441365,
+    "split_unit": "source1_entity",
+    "target_indexes_use_labels": false
+  },
+  "config": {
+    "chunk_size": 100000,
+    "max_block_size": null
+  },
+  "threshold": 25,
+  "semantics": {
+    "union": "explicit per-S1 candidate ID set union",
+    "ground_truth_used_for_candidate_construction": false,
+    "m4_strategy": "country-aware rare-token name_clean_unicode",
+    "m52_strategy": "country-aware informative address token",
+    "m533_strategy": "country-aware address number",
+    "m534_strategy": "country-aware postal and number intersection",
+    "base_threshold": 250
+  },
+  "sources": {
+    "S2": {
+      "target_source": "S2",
+      "strategies": [
+        {
+          "strategy": "m4_country_rare_token_name_clean_unicode_freq250",
+          "metric": {
+            "strategy": "country_rare_token_name_clean_unicode_freq250",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 288198,
+            "pair_recall": 0.3898265652010421,
+            "complete_entity_recall": 0.4275554246485335,
+            "candidate_pairs": 14999941,
+            "average_candidates": 33.98534319667395,
+            "median_candidates": 0.0,
+            "p95_candidates": 168.0,
+            "p99_candidates": 249.0,
+            "maximum_candidates": 684,
+            "zero_candidate_entities": 240031,
+            "reduction_ratio": 0.999993249665278,
+            "runtime_seconds": 66.44481529993936,
+            "process_rss_mb": 6451.359375
+          },
+          "cpu_seconds": 65.3125
+        },
+        {
+          "strategy": "m5.2_country_address_token_freq250",
+          "metric": {
+            "strategy": "country_address_token_freq250",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 354232,
+            "pair_recall": 0.4791464335085446,
+            "complete_entity_recall": 0.5149343513871739,
+            "candidate_pairs": 24394715,
+            "average_candidates": 55.27106816353812,
+            "median_candidates": 3.0,
+            "p95_candidates": 236.0,
+            "p99_candidates": 362.0,
+            "maximum_candidates": 934,
+            "zero_candidate_entities": 203818,
+            "reduction_ratio": 0.9999890217907059,
+            "runtime_seconds": 122.08795570000075,
+            "process_rss_mb": 6500.90625
+          },
+          "cpu_seconds": 120.390625,
+          "availability": {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 240528
+          },
+          "block_statistics": {
+            "indexed_blocks": 544966,
+            "max_block_size": 250,
+            "blocks_over_100": 7122,
+            "blocks_over_1000": 0,
+            "blocks_over_10000": 0
+          }
+        },
+        {
+          "strategy": "m4_union_m52",
+          "metric": {
+            "strategy": "m4_union_m52",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 501177,
+            "pair_recall": 0.677909313970821,
+            "complete_entity_recall": 0.679582658344001,
+            "candidate_pairs": 39196644,
+            "average_candidates": 88.80777587710851,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 111444,
+            "reduction_ratio": 0.999982360566153,
+            "runtime_seconds": 188.5327709999401,
+            "process_rss_mb": 4559.87890625
+          },
+          "cpu_seconds": 185.703125
+        },
+        {
+          "strategy": "m4_union_m52_union_m5.3.3",
+          "metric": {
+            "strategy": "m4_union_m52_union_m5.3.3",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 508688,
+            "pair_recall": 0.688068951897611,
+            "complete_entity_recall": 0.6883441142818302,
+            "candidate_pairs": 39380227,
+            "average_candidates": 89.22371959715882,
+            "median_candidates": 51.0,
+            "p95_candidates": 297.0,
+            "p99_candidates": 435.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 106236,
+            "reduction_ratio": 0.9999822779493814,
+            "runtime_seconds": 392.72706039994955,
+            "process_rss_mb": 4975.13671875
+          },
+          "cpu_seconds": 386.859375
+        },
+        {
+          "strategy": "m4_union_m52_union_m5.3.3_union_m5.3.4",
+          "metric": {
+            "strategy": "m4_union_m52_union_m5.3.3_union_m5.3.4",
+            "target_source": "S2",
+            "validation_entities": 441365,
+            "true_pairs": 739298,
+            "recovered_pairs": 508688,
+            "pair_recall": 0.688068951897611,
+            "complete_entity_recall": 0.6883441142818302,
+            "candidate_pairs": 39380227,
+            "average_candidates": 89.22371959715882,
+            "median_candidates": 51.0,
+            "p95_candidates": 297.0,
+            "p99_candidates": 435.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 106236,
+            "reduction_ratio": 0.9999822779493814,
+            "runtime_seconds": 512.6127269999124,
+            "process_rss_mb": 5444.5703125
+          },
+          "cpu_seconds": 504.921875
+        }
+      ],
+      "marginal_m4_to_union": {
+        "previous_strategy": "country_rare_token_name_clean_unicode_freq250",
+        "added_strategy": "country_address_token_freq250",
+        "new_recovered_pairs": 212979,
+        "new_complete_entities": 111236,
+        "candidate_pairs_before": 14999941,
+        "candidate_pairs_after": 39196644,
+        "marginal_candidate_pairs": 24196703,
+        "marginal_pair_recall": 0.2880827487697789,
+        "marginal_candidate_cost": 113.61074566037027,
+        "previously_missed_pairs": 451100,
+        "percentage_of_previous_misses_recovered": 0.47213256484149857
+      },
+      "marginal_union_to_m533": {
+        "previous_strategy": "m4_union_m52",
+        "added_strategy": "country_number_freq25",
+        "new_recovered_pairs": 7511,
+        "new_complete_entities": 3867,
+        "candidate_pairs_before": 39196644,
+        "candidate_pairs_after": 39380227,
+        "marginal_candidate_pairs": 183583,
+        "marginal_pair_recall": 0.010159637926790008,
+        "marginal_candidate_cost": 24.441885234988682,
+        "previously_missed_pairs": 238121,
+        "percentage_of_previous_misses_recovered": 0.03154278707043898
+      },
+      "marginal_union_m533_to_m534": {
+        "previous_strategy": "m4_union_m52_union_m5.3.3",
+        "added_strategy": "country_postal_number_freq25",
+        "new_recovered_pairs": 0,
+        "new_complete_entities": 0,
+        "candidate_pairs_before": 39380227,
+        "candidate_pairs_after": 39380227,
+        "marginal_candidate_pairs": 0,
+        "marginal_pair_recall": 0.0,
+        "marginal_candidate_cost": null,
+        "previously_missed_pairs": 230610,
+        "percentage_of_previous_misses_recovered": 0.0
+      },
+      "m533": {
+        "strategy": "country_number_freq25",
+        "availability": {
+          "validation_entities_without_address": 0,
+          "validation_entities_with_number": 21942
+        },
+        "block_statistics": {
+          "indexed_blocks_at_threshold": 87964,
+          "max_block_size": 25,
+          "blocks_over_100": 0,
+          "blocks_over_1000": 0,
+          "blocks_over_10000": 0
+        },
+        "runtime_seconds": 204.19428940000944,
+        "cpu_seconds": 201.15625,
+        "extraction": {
+          "rows": 5034616,
+          "rows_with_signal": 4497031,
+          "rows_with_multiple_signals": 1393781,
+          "distinct_signals": 96980,
+          "signal_occurrences": 6640377
+        }
+      },
+      "m534": {
+        "strategy": "country_postal_number_freq25",
+        "semantics": "country-aware postal/number intersection",
+        "availability": {
+          "validation_entities_without_address": 0,
+          "validation_entities_with_postal": 19562,
+          "validation_entities_with_number": 21942
+        },
+        "block_statistics": {
+          "postal_indexed_blocks_at_threshold": 67685,
+          "postal_max_block_size": 25,
+          "postal_blocks_over_100": 0,
+          "postal_blocks_over_1000": 0,
+          "number_indexed_blocks_at_threshold": 87964,
+          "number_max_block_size": 25,
+          "number_blocks_over_100": 0,
+          "number_blocks_over_1000": 0
+        },
+        "runtime_seconds": 119.88566659996286,
+        "cpu_seconds": 118.0625,
+        "postal_extraction": {
+          "rows": 5034616,
+          "rows_with_signal": 1687696,
+          "rows_with_multiple_signals": 82782,
+          "distinct_signals": 77176,
+          "signal_occurrences": 1773078
+        },
+        "number_extraction": {
+          "rows": 5034616,
+          "rows_with_signal": 4497031,
+          "rows_with_multiple_signals": 1393781,
+          "distinct_signals": 96980,
+          "signal_occurrences": 6640377
+        }
+      }
+    },
+    "S3": {
+      "target_source": "S3",
+      "strategies": [
+        {
+          "strategy": "m4_country_rare_token_name_clean_unicode_freq250",
+          "metric": {
+            "strategy": "country_rare_token_name_clean_unicode_freq250",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 302081,
+            "pair_recall": 0.38264595865745016,
+            "complete_entity_recall": 0.4105785461012994,
+            "candidate_pairs": 15029807,
+            "average_candidates": 34.05301054682632,
+            "median_candidates": 0.0,
+            "p95_candidates": 168.0,
+            "p99_candidates": 249.0,
+            "maximum_candidates": 724,
+            "zero_candidate_entities": 242191,
+            "reduction_ratio": 0.9999935574029024,
+            "runtime_seconds": 70.87748340005055,
+            "process_rss_mb": 4879.375
+          },
+          "cpu_seconds": 70.03125
+        },
+        {
+          "strategy": "m5.2_country_address_token_freq250",
+          "metric": {
+            "strategy": "country_address_token_freq250",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 352510,
+            "pair_recall": 0.4465243656050455,
+            "complete_entity_recall": 0.4703680627145333,
+            "candidate_pairs": 24260236,
+            "average_candidates": 54.966379300578886,
+            "median_candidates": 3.0,
+            "p95_candidates": 236.0,
+            "p99_candidates": 362.0,
+            "maximum_candidates": 923,
+            "zero_candidate_entities": 203335,
+            "reduction_ratio": 0.9999896007363208,
+            "runtime_seconds": 127.85214610002004,
+            "process_rss_mb": 5370.13671875
+          },
+          "cpu_seconds": 125.921875,
+          "availability": {
+            "validation_entities_without_address": 0,
+            "validation_entities_with_informative_token": 240191
+          },
+          "block_statistics": {
+            "indexed_blocks": 517580,
+            "max_block_size": 250,
+            "blocks_over_100": 6732,
+            "blocks_over_1000": 0,
+            "blocks_over_10000": 0
+          }
+        },
+        {
+          "strategy": "m4_union_m52",
+          "metric": {
+            "strategy": "m4_union_m52",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 520514,
+            "pair_recall": 0.6593350079105406,
+            "complete_entity_recall": 0.6516148765760765,
+            "candidate_pairs": 39106086,
+            "average_candidates": 88.60259875613154,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 111968,
+            "reduction_ratio": 0.999983236993252,
+            "runtime_seconds": 198.7296295000706,
+            "process_rss_mb": 3465.6640625
+          },
+          "cpu_seconds": 195.953125
+        },
+        {
+          "strategy": "m4_union_m52_union_m5.3.3",
+          "metric": {
+            "strategy": "m4_union_m52_union_m5.3.3",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 528552,
+            "pair_recall": 0.669516741338623,
+            "complete_entity_recall": 0.660532665707521,
+            "candidate_pairs": 39284812,
+            "average_candidates": 89.0075379787704,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 106782,
+            "reduction_ratio": 0.9999831603815158,
+            "runtime_seconds": 410.56275400007144,
+            "process_rss_mb": 5115.78125
+          },
+          "cpu_seconds": 404.53125
+        },
+        {
+          "strategy": "m4_union_m52_union_m5.3.3_union_m5.3.4",
+          "metric": {
+            "strategy": "m4_union_m52_union_m5.3.3_union_m5.3.4",
+            "target_source": "S3",
+            "validation_entities": 441365,
+            "true_pairs": 789453,
+            "recovered_pairs": 528552,
+            "pair_recall": 0.669516741338623,
+            "complete_entity_recall": 0.660532665707521,
+            "candidate_pairs": 39284812,
+            "average_candidates": 89.0075379787704,
+            "median_candidates": 51.0,
+            "p95_candidates": 296.0,
+            "p99_candidates": 434.0,
+            "maximum_candidates": 1115,
+            "zero_candidate_entities": 106782,
+            "reduction_ratio": 0.9999831603815158,
+            "runtime_seconds": 537.8892818000168,
+            "process_rss_mb": 5656.87890625
+          },
+          "cpu_seconds": 529.5
+        }
+      ],
+      "marginal_m4_to_union": {
+        "previous_strategy": "country_rare_token_name_clean_unicode_freq250",
+        "added_strategy": "country_address_token_freq250",
+        "new_recovered_pairs": 218433,
+        "new_complete_entities": 106385,
+        "candidate_pairs_before": 15029807,
+        "candidate_pairs_after": 39106086,
+        "marginal_candidate_pairs": 24076279,
+        "marginal_pair_recall": 0.27668904925309046,
+        "marginal_candidate_cost": 110.22271817902973,
+        "previously_missed_pairs": 487372,
+        "percentage_of_previous_misses_recovered": 0.4481853696970692
+      },
+      "marginal_union_to_m533": {
+        "previous_strategy": "m4_union_m52",
+        "added_strategy": "country_number_freq25",
+        "new_recovered_pairs": 8038,
+        "new_complete_entities": 3936,
+        "candidate_pairs_before": 39106086,
+        "candidate_pairs_after": 39284812,
+        "marginal_candidate_pairs": 178726,
+        "marginal_pair_recall": 0.010181733428082483,
+        "marginal_candidate_cost": 22.235133117690967,
+        "previously_missed_pairs": 268939,
+        "percentage_of_previous_misses_recovered": 0.029887818427226993
+      },
+      "marginal_union_m533_to_m534": {
+        "previous_strategy": "m4_union_m52_union_m5.3.3",
+        "added_strategy": "country_postal_number_freq25",
+        "new_recovered_pairs": 0,
+        "new_complete_entities": 0,
+        "candidate_pairs_before": 39284812,
+        "candidate_pairs_after": 39284812,
+        "marginal_candidate_pairs": 0,
+        "marginal_pair_recall": 0.0,
+        "marginal_candidate_cost": null,
+        "previously_missed_pairs": 260901,
+        "percentage_of_previous_misses_recovered": 0.0
+      },
+      "m533": {
+        "strategy": "country_number_freq25",
+        "availability": {
+          "validation_entities_without_address": 0,
+          "validation_entities_with_number": 21095
+        },
+        "block_statistics": {
+          "indexed_blocks_at_threshold": 88493,
+          "max_block_size": 25,
+          "blocks_over_100": 0,
+          "blocks_over_1000": 0,
+          "blocks_over_10000": 0
+        },
+        "runtime_seconds": 211.83312450000085,
+        "cpu_seconds": 208.578125,
+        "extraction": {
+          "rows": 5285603,
+          "rows_with_signal": 4724818,
+          "rows_with_multiple_signals": 1607354,
+          "distinct_signals": 97664,
+          "signal_occurrences": 7014731
+        }
+      },
+      "m534": {
+        "strategy": "country_postal_number_freq25",
+        "semantics": "country-aware postal/number intersection",
+        "availability": {
+          "validation_entities_without_address": 0,
+          "validation_entities_with_postal": 18813,
+          "validation_entities_with_number": 21095
+        },
+        "block_statistics": {
+          "postal_indexed_blocks_at_threshold": 67841,
+          "postal_max_block_size": 25,
+          "postal_blocks_over_100": 0,
+          "postal_blocks_over_1000": 0,
+          "number_indexed_blocks_at_threshold": 88493,
+          "number_max_block_size": 25,
+          "number_blocks_over_100": 0,
+          "number_blocks_over_1000": 0
+        },
+        "runtime_seconds": 127.32652779994532,
+        "cpu_seconds": 124.96875,
+        "postal_extraction": {
+          "rows": 5285603,
+          "rows_with_signal": 1783322,
+          "rows_with_multiple_signals": 101587,
+          "distinct_signals": 77691,
+          "signal_occurrences": 1887319
+        },
+        "number_extraction": {
+          "rows": 5285603,
+          "rows_with_signal": 4724818,
+          "rows_with_multiple_signals": 1607354,
+          "distinct_signals": 97664,
+          "signal_occurrences": 7014731
+        }
+      }
+    }
+  },
+  "peak_rss_mb": 8438.96875,
+  "resource_stop": {
+    "experiment_completed_result_captured": true,
+    "checkpoint_stopped_before_further_sensitivity": true,
+    "reason": "Peak RSS exceeded the observed resource reference.",
+    "m54_reference_peak_rss_mb": 7228.85546875,
+    "threshold5_peak_rss_mb": 7621.75390625,
+    "threshold25_peak_rss_mb": 8438.96875,
+    "disk_free_after_run_gb": 431.780048896,
+    "further_threshold_experiments_executed": false,
+    "threshold_250_regenerated": false
+  },
+  "validation_metadata": {
+    "artifact_identity_arithmetic_validated": true,
+    "marginal_candidate_cost_validated": true,
+    "m534_zero_contribution_validated": true,
+    "m4_union_m52_matches_locked_baseline": true,
+    "validation_split_validated": true
+  }
+}
